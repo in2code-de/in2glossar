@@ -1,0 +1,7 @@
+<h3>{definition.word}</h3>
+<p>{definition.shortDescription}</p>
+<f:if condition="{settings.targetPage}">
+	<p>
+		<f:link.action action="show" pluginName="Main" pageUid="{settings.targetPage}" arguments="{definition:definition}">Mehr Informationen</f:link.action>
+	</p>
+</f:if>

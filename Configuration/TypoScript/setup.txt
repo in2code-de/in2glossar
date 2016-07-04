@@ -1,0 +1,35 @@
+plugin.tx_in2glossar {
+	settings {
+		targetPage = {$plugin.tx_in2glossar.settings.targetPage}
+		storagePid = {$plugin.tx_in2glossar.settings.storagePid}
+	}
+	persistence {
+		storagePid = {$plugin.tx_in2glossar.settings.storagePid}
+	}
+	view {
+
+	}
+}
+module.tx_in2glossar < plugin.tx_in2glossar
+
+lib.glossarData = USER
+lib.glossarData {
+	userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+	extensionName = In2glossar
+	pluginName = Data
+	vendorName = In2code
+	controller = StandardController
+	action = index
+	settings < plugin.tx_meineExtension.settings
+	persistence < plugin.tx_meineExtension.persistence
+	view < plugin.tx_meineExtension.view
+}
+
+page.footerData.1467302957 < lib.glossarData
+
+page.includeJSFooterlibs {
+	jquery = https://code.jquery.com/jquery-1.12.4.min.js
+	jquery.external = 1
+	jquery.forceOnTop = 1
+	in2glossar = EXT:in2glossar/Resources/Public/JavaScript/in2glossar.js
+}

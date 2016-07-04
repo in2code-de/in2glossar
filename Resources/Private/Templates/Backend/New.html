@@ -1,0 +1,14 @@
+<f:layout name="Backend" />
+<f:section name="buttons">
+	<f:be.buttons.icon uri="{f:uri.action(action:'index')}" icon="actions-document-close" />
+</f:section>
+<f:section name="content">
+
+	<f:form action="create">
+		<f:form.textfield property="word" />
+		<f:form.textarea property="shortDescription" />
+		<f:form.textarea property="description" />
+		<f:form.submit value="Save" />
+	</f:form>
+
+</f:section>

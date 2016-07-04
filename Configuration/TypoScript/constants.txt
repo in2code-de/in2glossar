@@ -1,0 +1,6 @@
+plugin.tx_in2glossar {
+	settings {
+		targetPage =
+		storagePid =
+	}
+}

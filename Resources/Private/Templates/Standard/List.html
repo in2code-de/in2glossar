@@ -1,0 +1,12 @@
+<f:layout name="default" />
+
+<f:section name="main">
+
+	<dl class="in2glossar-list">
+		<f:for each="{definitions}" as="definition">
+			<dt>{definition.word}</dt>
+			<dd>{definition.shortDescription}</dd>
+		</f:for>
+	</dl>
+
+</f:section>

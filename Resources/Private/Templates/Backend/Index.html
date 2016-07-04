@@ -1,0 +1,7 @@
+<f:layout name="Backend" />
+<f:section name="buttons">
+	<f:be.buttons.icon uri="mod.php?M=web_list&edit[tx_in2glossar_domain_model_definition][1]=new&defVals[tx_in2glossar_domain_model_definition][pid]=13" icon="actions-document-new" />
+</f:section>
+<f:section name="content">
+	<f:be.tableList tableName="tx_in2glossar_domain_model_definition" fieldList="{0:'word',1:'short_description'}" sortField="word" clickTitleMode="edit" enableClickMenu="true" />
+</f:section>
