@@ -119,7 +119,7 @@ return array(
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim',
-                'maxlength' => 255,
+                'max' => 255,
             ),
         ),
         'short_description' => array(
@@ -129,7 +129,6 @@ return array(
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 3,
-                'max' => 255,
                 'eval' => 'trim',
             ),
         ),
@@ -140,9 +139,8 @@ return array(
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 8,
-                'max' => 255,
-                'eval' => 'trim',
             ),
+            'defaultExtras' => 'richtext[]'
         ),
     ),
 );

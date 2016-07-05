@@ -3,10 +3,6 @@
 <f:section name="main">
 
 	<h2>{definition.word}</h2>
-	<p>{definition.description}</p>
-
-	<f:comment>
-		<f:debug>{definition}</f:debug>
-	</f:comment>
+	<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
 
 </f:section>
