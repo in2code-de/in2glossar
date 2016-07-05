@@ -27,6 +27,7 @@ lib.glossarData {
 
 page.footerData.1467302957 < lib.glossarData
 
+page.includeCSS.tx_in2glossar = EXT:in2glossar/Resources/Public/Css/in2glossar.css
 page.includeJSFooterlibs {
 	jquery = https://code.jquery.com/jquery-1.12.4.min.js
 	jquery.external = 1

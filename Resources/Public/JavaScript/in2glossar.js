@@ -74,8 +74,8 @@
 
 			$.in2glossarTooltip().clearDelay().show(definition.description, function() {
 				$(this).css({
-					'top':top + 'px',
-					'left':left + 'px'
+					'top': top + 'px',
+					'left': left + 'px'
 				});
 			});
 
@@ -122,13 +122,7 @@
 		}
 
 		if ($('#in2glossar-overlay').length == 0) {
-			$('<div id="in2glossar-overlay" />').hide().css({
-				'position':'absolute',
-				'width':'300px',
-				'padding':'5px',
-				'background':'#fff',
-				'border':'1px solid black'
-			}).appendTo('body');
+			$('<div id="in2glossar-overlay" />').hide().appendTo('body');
 		}
 
 		var $overlay = $('#in2glossar-overlay');
