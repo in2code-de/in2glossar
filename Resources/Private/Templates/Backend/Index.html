@@ -1,7 +1,9 @@
 <f:layout name="Backend" />
+{namespace glossar=In2code\In2glossar\ViewHelpers}
+
 <f:section name="buttons">
-	<f:be.buttons.icon uri="mod.php?M=web_list&edit[tx_in2glossar_domain_model_definition][1]=new&defVals[tx_in2glossar_domain_model_definition][pid]=13" icon="actions-document-new" />
+	<f:be.buttons.icon uri="{glossar:be.link(parameters:'edit[tx_in2glossar_domain_model_definition][{settings.storagePid}]=new')}" icon="actions-document-new" />
 </f:section>
 <f:section name="content">
-	<f:be.tableList tableName="tx_in2glossar_domain_model_definition" fieldList="{0:'word',1:'short_description'}" sortField="word" clickTitleMode="edit" enableClickMenu="true" />
+	<glossar:be.tableList tableName="tx_in2glossar_domain_model_definition" fieldList="{0:'word',1:'short_description',2:'description'}" sortField="word" clickTitleMode="edit" enableClickMenu="true" />
 </f:section>
