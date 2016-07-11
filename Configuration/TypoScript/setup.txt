@@ -8,7 +8,15 @@ plugin.tx_in2glossar {
 		storagePid = {$plugin.tx_in2glossar.settings.storagePid}
 	}
 	view {
-
+		layoutRootPaths {
+			1 = EXT:in2glossar/Resources/Private/Layouts/
+		}
+		templateRootPaths {
+			1 = EXT:in2glossar/Resources/Private/Templates/
+		}
+		partialRootPaths {
+			1 = EXT:in2glossar/Resources/Private/Partials/
+		}
 	}
 }
 module.tx_in2glossar < plugin.tx_in2glossar
