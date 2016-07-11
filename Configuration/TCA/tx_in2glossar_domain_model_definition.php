@@ -21,7 +21,7 @@ return array(
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('in2glossar') . 'Resources/Public/Icons/definition.svg'
     ),
     'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, ranking, records',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, word, synonyms, short_description, description',
     ),
     'types' => array(
         '1' => array('showitem' => '
@@ -30,6 +30,7 @@ return array(
                 l10n_diffsource,
                 hidden;;1,
                 word,
+                synonyms,
                 short_description,
                 description,
             --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
@@ -120,6 +121,16 @@ return array(
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 255,
+            ),
+        ),
+        'synonyms' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.synonyms',
+            'config' => array(
+                'type' => 'text',
+                'cols' => 30,
+                'rows' => 3,
+                'eval' => 'trim',
             ),
         ),
         'short_description' => array(

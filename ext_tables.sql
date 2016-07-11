@@ -6,6 +6,7 @@ CREATE TABLE tx_in2glossar_domain_model_definition (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	word varchar(255) DEFAULT '' NOT NULL,
+	synonyms tinytext NOT NULL,
 	short_description tinytext NOT NULL,
 	description text NOT NULL,
 

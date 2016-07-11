@@ -43,6 +43,11 @@ class Definition extends AbstractEntity
     /**
      * @var string
      */
+    protected $synonyms;
+
+    /**
+     * @var string
+     */
     protected $shortDescription;
 
     /**
@@ -64,6 +69,22 @@ class Definition extends AbstractEntity
     public function setWord($word)
     {
         $this->word = $word;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSynonyms()
+    {
+        return $this->synonyms;
+    }
+
+    /**
+     * @param string $synonyms
+     */
+    public function setSynonyms($synonyms)
+    {
+        $this->synonyms = $synonyms;
     }
 
     /**

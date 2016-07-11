@@ -26,6 +26,7 @@ namespace In2code\In2glossar\ViewHelpers;
  ***************************************************************/
 
 use In2code\In2glossar\Domain\Model\Definition;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
@@ -59,9 +60,26 @@ class JsonDefinitionsViewHelper extends RenderViewHelper
             ));
             $result[] = array(
                 'term' => $definition->getWord(),
+                'termregex' => $this->getTermRegEx($definition),
                 'description' => $this->viewHelperVariableContainer->getView()->renderPartial('ShortDescription', null, $arguments)
             );
         }
         return json_encode($result);
+    }
+
+    /**
+     * @param Definition $definition
+     * @return string
+     */
+    protected function getTermRegEx(Definition $definition)
+    {
+        $terms = array($definition->getWord());
+        if (strlen($definition->getSynonyms()) > 0) {
+            $terms = array_merge(
+                $terms,
+                GeneralUtility::trimExplode(',', $definition->getSynonyms())
+            );
+        }
+        return implode('|', $terms);
     }
 }

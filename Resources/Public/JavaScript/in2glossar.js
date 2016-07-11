@@ -38,6 +38,34 @@
 		},
 
 		/**
+		 * @returns {Array}
+		 */
+		getAllDefinitions: function() {
+			var terms = [];
+			for (var i in this.definitions) {
+				var definition = this.definitions[i];
+				terms.push({
+					'term': definition.term,
+					'regex': definition.termregex
+				});
+			}
+			// return terms.join('|');
+		},
+
+		/**
+		 * @param {Function} callback
+		 */
+		traverseAllDefinitions: function(callback) {
+			if (!$.isFunction(callback)) {
+				return;
+			}
+			for (var i in this.definitions) {
+				var definition = this.definitions[i];
+				callback.call(this, definition.term, definition.termregex);
+			}
+		},
+
+		/**
 		 * @returns {string}
 		 */
 		getTermSelector: function(callback) {
@@ -88,9 +116,6 @@
 			});
 		});
 
-		var term = definitions.getTermsInArray().join('|');
-		var re = new RegExp('(?:^|\\b)(' + term + ')(?!\\w)', 'ig');
-
 		/**
 		 * @param {jQuery} $elem
 		 * @param {Function} callback
@@ -105,12 +130,15 @@
 			});
 		};
 
-		$(settings.selectors).each(function() {
-			traverse($(this), function(textnode) {
-				var processedHtml = textnode.textContent.replace(re, function(match, item , offset, string) {
-					return '<abbr class="in2glossar-abbr" ' + settings.attributeSelector + '="' + match + '">' + match + settings.iconTag + '</abbr>';
+		definitions.traverseAllDefinitions(function(term, regex) {
+			var re = new RegExp('(?:^|\\b)(' + regex + ')(?!\\w)', 'ig');
+			$(settings.selectors).each(function() {
+				traverse($(this), function(textnode) {
+					var processedHtml = textnode.textContent.replace(re, function(match, item , offset, string) {
+						return '<abbr class="in2glossar-abbr" ' + settings.attributeSelector + '="' + term + '">' + match + settings.iconTag + '</abbr>';
+					});
+					$(textnode).replaceWith(processedHtml);
 				});
-				$(textnode).replaceWith(processedHtml);
 			});
 		});
 

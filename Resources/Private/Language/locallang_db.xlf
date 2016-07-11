@@ -9,6 +9,9 @@
 			<trans-unit id="tx_in2glossar_domain_model_definition.word">
 				<source>Word</source>
 			</trans-unit>
+			<trans-unit id="tx_in2glossar_domain_model_definition.synonyms">
+				<source>Synonyms</source>
+			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.short_description">
 				<source>Shortdescription</source>
 			</trans-unit>
