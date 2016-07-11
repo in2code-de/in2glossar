@@ -68,8 +68,8 @@
 		var $body = $('body');
 		$body.on('mouseenter', '[' + settings.attributeSelector + ']', function(e) {
 			var $item = $(this);
-			var top = ($item.position().top + $item.height());
-			var left = ($item.position().left);
+			var top = ($item.offset().top + $item.height());
+			var left = ($item.offset().left);
 			var definition = definitions.getDefinitionForTerm($item.text());
 
 			$.in2glossarTooltip().clearDelay().show(definition.description, function() {
