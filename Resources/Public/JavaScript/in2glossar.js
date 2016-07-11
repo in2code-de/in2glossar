@@ -60,7 +60,9 @@
 			allowedSubtypes: '*',
 			attributeSelector: 'data-glossar="true"',
 			excludeSelector: 'div.in2glossar-container'
-		}, options);
+		}, $.in2code.in2glossar, options);
+
+		console.log(settings);
 
 		var $data = $('[data-in2glossar]');
 		var definitions = new Definitions($data.html());
@@ -163,12 +165,5 @@
 		$('#in2glossar-overlay').data('in2glossarTooltip', overlayObject);
 		return overlayObject;
 	};
-
-	/**
-	 * Initialize Plugin
-	 */
-	$(document).ready(function() {
-		$.in2glossar();
-	});
 
 })(jQuery);

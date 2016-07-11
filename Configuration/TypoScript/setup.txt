@@ -2,6 +2,7 @@ plugin.tx_in2glossar {
 	settings {
 		targetPage = {$plugin.tx_in2glossar.settings.targetPage}
 		storagePid = {$plugin.tx_in2glossar.settings.storagePid}
+		excludeSelector = {$plugin.tx_in2glossar.settings.excludeSelector}
 	}
 	persistence {
 		storagePid = {$plugin.tx_in2glossar.settings.storagePid}

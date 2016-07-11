@@ -2,3 +2,26 @@
 <script data-in2glossar="true">
 	{glossar:jsonDefinitions(definitions:definitions)}
 </script>
+<script>
+<![CDATA[
+	(function($) {
+		"use strict";
+
+		if (!$.in2code) {
+			$.in2code = {};
+		}
+
+		$.in2code.in2glossar = {]]>
+			excludeSelector: '{settings.excludeSelector}'
+		<![CDATA[};
+
+		/**
+		 * Initialize Plugin
+		 */
+		$(document).ready(function() {
+			$.in2glossar();
+		});
+
+	})(jQuery);
+]]>
+</script>
