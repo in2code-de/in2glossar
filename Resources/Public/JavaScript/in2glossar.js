@@ -19,7 +19,7 @@
 		getDefinitionForTerm: function(term) {
 			for (var i in this.definitions) {
 				var definition = this.definitions[i];
-				if (definition.term == term) {
+				if (definition.term == term || definition.term.toLowerCase() == term.toLowerCase()) {
 					return definition;
 				}
 			}
@@ -58,8 +58,9 @@
 		var settings = $.extend({
 			selectors: 'body',
 			allowedSubtypes: '*',
-			attributeSelector: 'data-glossar="true"',
-			excludeSelector: 'div.in2glossar-container'
+			attributeSelector: 'data-glossar',
+			excludeSelector: 'div.in2glossar-container',
+			iconTag: ''
 		}, $.in2code.in2glossar, options);
 
 		console.log(settings);
@@ -72,7 +73,8 @@
 			var $item = $(this);
 			var top = ($item.offset().top + $item.height());
 			var left = ($item.offset().left);
-			var definition = definitions.getDefinitionForTerm($item.text());
+			var value = $item.attr(settings.attributeSelector);
+			var definition = definitions.getDefinitionForTerm(value);
 
 			$.in2glossarTooltip().clearDelay().show(definition.description, function() {
 				$(this).css({
@@ -106,7 +108,7 @@
 		$(settings.selectors).each(function() {
 			traverse($(this), function(textnode) {
 				var processedHtml = textnode.textContent.replace(re, function(match, item , offset, string) {
-					return '<abbr ' + settings.attributeSelector + '>' + match + '</abbr>';
+					return '<abbr class="in2glossar-abbr" ' + settings.attributeSelector + '="' + match + '">' + match + settings.iconTag + '</abbr>';
 				});
 				$(textnode).replaceWith(processedHtml);
 			});
