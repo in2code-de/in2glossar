@@ -106,7 +106,7 @@
 		$(settings.selectors).each(function() {
 			traverse($(this), function(textnode) {
 				var processedHtml = textnode.textContent.replace(re, function(match, item , offset, string) {
-					return '<abr ' + settings.attributeSelector + '>' + match + '</abr>';
+					return '<abbr ' + settings.attributeSelector + '>' + match + '</abbr>';
 				});
 				$(textnode).replaceWith(processedHtml);
 			});
