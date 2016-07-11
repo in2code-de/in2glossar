@@ -114,6 +114,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\TableListViewH
         $dblist->dontShowClipControlPanels = false;
         $dblist->displayFields = true;
         $dblist->noControlPanels = false;
+        $dblist->localizationView = true;
 
         return $dblist;
     }
