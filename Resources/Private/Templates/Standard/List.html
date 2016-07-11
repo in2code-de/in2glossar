@@ -5,7 +5,9 @@
 	<dl class="in2glossar-list">
 		<f:for each="{definitions}" as="definition">
 			<dt>{definition.word}</dt>
-			<dd>{definition.shortDescription}</dd>
+			<dd>
+				<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
+			</dd>
 		</f:for>
 	</dl>
 
