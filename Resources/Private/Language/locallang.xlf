@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="" product-name="in2glossar">
+		<header/>
+		<body>
+			<trans-unit id="in2glossar">
+				<source>in2glossar</source>
+			</trans-unit>
+			<trans-unit id="constants.targetPage">
+				<source>Glossar Target Page</source>
+			</trans-unit>
+			<trans-unit id="constants.storagePid">
+				<source>Glossar StoragePid</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
