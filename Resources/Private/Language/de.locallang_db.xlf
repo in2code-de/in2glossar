@@ -1,38 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="" product-name="in2glossar">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="" product-name="in2glossar">
 		<header/>
 		<body>
 			<trans-unit id="tx_in2glossar_domain_model_definition">
 				<source>Definition</source>
+				<target>Definition</target>
 			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.word">
 				<source>Word</source>
+				<target>Wort</target>
 			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.synonyms">
 				<source>Synonyms</source>
+				<target>Synonyme</target>
 			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.short_description">
 				<source>Shortdescription</source>
+				<target>Kurzbeschreibung</target>
 			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.description">
 				<source>Description</source>
+				<target>Beschreibung</target>
 			</trans-unit>
 
 			<trans-unit id="in2glossar">
 				<source>in2glossar</source>
+				<target>in2glossar</target>
 			</trans-unit>
 			<trans-unit id="constants.category.javascript">
 				<source>Javascript configuration</source>
+				<target>Javascript Konfiguration</target>
 			</trans-unit>
 			<trans-unit id="constants.targetPage">
 				<source>Glossar Target Page</source>
+				<target>Glossar Detail Seite</target>
 			</trans-unit>
 			<trans-unit id="constants.storagePid">
 				<source>Glossar StoragePid</source>
+				<target>Glossar Datensatzsammlung</target>
 			</trans-unit>
 			<trans-unit id="constants.excludeSelectors">
 				<source>Exclude Selectors</source>
+				<target>Ausgeschlossene Selektoren</target>
 			</trans-unit>
 		</body>
 	</file>

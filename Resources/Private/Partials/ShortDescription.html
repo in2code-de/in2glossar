@@ -2,6 +2,8 @@
 <p>{definition.shortDescription}</p>
 <f:if condition="{settings.targetPage}">
 	<p>
-		<f:link.action action="show" pluginName="Main" pageUid="{settings.targetPage}" arguments="{definition:definition}">Mehr Informationen</f:link.action>
+		<f:link.action action="show" pluginName="Main" pageUid="{settings.targetPage}" arguments="{definition:definition}">
+			<f:translate key="label.more">More informations</f:translate>
+		</f:link.action>
 	</p>
 </f:if>
