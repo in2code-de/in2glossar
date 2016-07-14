@@ -1,13 +1,19 @@
 <f:layout name="default" />
+{namespace glossar=In2code\In2glossar\ViewHelpers}
+
+<f:section name="list-item">
+	<dt>{definition.word}</dt>
+	<dd>
+		<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
+	</dd>
+</f:section>
 
 <f:section name="main">
 
+	<glossar:index collection="{definitions}" />
 	<dl class="in2glossar-list">
 		<f:for each="{definitions}" as="definition">
-			<dt>{definition.word}</dt>
-			<dd>
-				<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
-			</dd>
+			<f:render section="list-item" arguments="{_all}" />
 		</f:for>
 	</dl>
 
