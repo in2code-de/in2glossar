@@ -91,8 +91,6 @@
 			iconTag: ''
 		}, $.in2code.in2glossar, options);
 
-		console.log(settings);
-
 		var $data = $('[data-in2glossar]');
 		var definitions = new Definitions($data.html());
 
