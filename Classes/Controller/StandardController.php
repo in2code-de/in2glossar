@@ -65,7 +65,7 @@ class StandardController extends ActionController
      */
     public function indexAction()
     {
-        $definitions = $this->definitionRepository->findAll();
+        $definitions = $this->definitionRepository->findByTooltip(true);
         $this->view->assign('definitions', $definitions);
     }
 }
