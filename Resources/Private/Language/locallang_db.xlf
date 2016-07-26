@@ -6,6 +6,9 @@
 			<trans-unit id="tx_in2glossar_domain_model_definition">
 				<source>Definition</source>
 			</trans-unit>
+			<trans-unit id="tx_in2glossar_domain_model_definition.tooltip">
+				<source>Tooltip</source>
+			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.word">
 				<source>Word</source>
 			</trans-unit>

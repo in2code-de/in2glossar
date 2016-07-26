@@ -29,6 +29,7 @@ return array(
                 l10n_parent,
                 l10n_diffsource,
                 hidden;;1,
+                tooltip,
                 word,
                 synonyms,
                 short_description,
@@ -111,6 +112,14 @@ return array(
                 'range' => array(
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ),
+            ),
+        ),
+        'tooltip' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.tooltip',
+            'config' => array(
+                'type' => 'check',
             ),
         ),
         'word' => array(

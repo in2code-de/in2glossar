@@ -36,6 +36,11 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class Definition extends AbstractEntity
 {
     /**
+     * @var bool
+     */
+    protected $tooltip;
+
+    /**
      * @var string
      */
     protected $word;
@@ -54,6 +59,22 @@ class Definition extends AbstractEntity
      * @var string
      */
     protected $description;
+
+    /**
+     * @return boolean
+     */
+    public function getTooltip()
+    {
+        return $this->tooltip;
+    }
+
+    /**
+     * @param boolean $tooltip
+     */
+    public function setTooltip($tooltip)
+    {
+        $this->tooltip = $tooltip;
+    }
 
     /**
      * @return string

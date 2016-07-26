@@ -7,6 +7,10 @@
 				<source>Definition</source>
 				<target>Definition</target>
 			</trans-unit>
+			<trans-unit id="tx_in2glossar_domain_model_definition.tooltip">
+				<source>Tooltip</source>
+				<target>Tooltip</target>
+			</trans-unit>
 			<trans-unit id="tx_in2glossar_domain_model_definition.word">
 				<source>Word</source>
 				<target>Wort</target>
