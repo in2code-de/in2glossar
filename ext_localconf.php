@@ -8,7 +8,7 @@ defined('TYPO3_MODE') or die('Access denied.');
     'In2code.' . $_EXTKEY,
     'Main',
     array(
-        'Standard' => 'list, show',
+        'Standard' => 'list',
     ),
     array()
 );

@@ -2,7 +2,7 @@
 {namespace glossar=In2code\In2glossar\ViewHelpers}
 
 <f:section name="list-item">
-	<dt>{definition.word}</dt>
+	<dt id="{definition->glossar:definitionAnchor()}">{definition.word}</dt>
 	<dd>
 		<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
 	</dd>
