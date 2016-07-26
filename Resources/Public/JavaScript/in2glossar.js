@@ -38,21 +38,6 @@
 		},
 
 		/**
-		 * @returns {Array}
-		 */
-		getAllDefinitions: function() {
-			var terms = [];
-			for (var i in this.definitions) {
-				var definition = this.definitions[i];
-				terms.push({
-					'term': definition.term,
-					'regex': definition.termregex
-				});
-			}
-			// return terms.join('|');
-		},
-
-		/**
 		 * @param {Function} callback
 		 */
 		traverseAllDefinitions: function(callback) {
