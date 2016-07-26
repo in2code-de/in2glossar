@@ -61,18 +61,6 @@ class StandardController extends ActionController
     }
 
     /**
-     * @param Definition $definition
-     * @return void
-     */
-    public function showAction(Definition $definition = null)
-    {
-        if ($definition === null) {
-            return '';
-        }
-        $this->view->assign('definition', $definition);
-    }
-
-    /**
      * @return void
      */
     public function indexAction()
