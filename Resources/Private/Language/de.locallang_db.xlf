@@ -28,6 +28,11 @@
 				<target>Beschreibung</target>
 			</trans-unit>
 
+			<trans-unit id="tt_content.tx_in2glossar_exclude">
+				<source>Exclude from Glossar</source>
+				<target>Ausgenommen vom Glossar</target>
+			</trans-unit>
+
 			<trans-unit id="in2glossar">
 				<source>in2glossar</source>
 				<target>in2glossar</target>

@@ -22,6 +22,10 @@
 				<source>Description</source>
 			</trans-unit>
 
+			<trans-unit id="tt_content.tx_in2glossar_exclude">
+				<source>Exclude from Glossar</source>
+			</trans-unit>
+
 			<trans-unit id="in2glossar">
 				<source>in2glossar</source>
 			</trans-unit>

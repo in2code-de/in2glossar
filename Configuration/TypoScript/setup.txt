@@ -43,3 +43,12 @@ page.includeJSFooterlibs {
 	jquery.forceOnTop = 1
 	in2glossar = EXT:in2glossar/Resources/Public/JavaScript/in2glossar.js
 }
+
+tt_content.stdWrap.innerWrap.cObject.default.20 {
+	1469530480 = TEXT
+	1469530480 {
+		value = in2glossar-excluded
+		noTrimWrap = || |
+		if.isTrue.field = tx_in2glossar_exclude
+	}
+}
