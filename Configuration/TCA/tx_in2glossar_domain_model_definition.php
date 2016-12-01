@@ -65,8 +65,8 @@ return array(
                 'items' => array(
                     array('', 0),
                 ),
-                'foreign_table' => 'tx_in2tagcloud_domain_model_tag',
-                'foreign_table_where' => 'AND tx_in2tagcloud_domain_model_tag.pid=###CURRENT_PID### AND tx_in2tagcloud_domain_model_tag.sys_language_uid IN (-1,0)',
+                'foreign_table' => 'tx_in2glossar_domain_model_definition',
+                'foreign_table_where' => 'AND tx_in2glossar_domain_model_definition.pid=###CURRENT_PID### AND tx_in2glossar_domain_model_definition.sys_language_uid IN (-1,0)',
             ),
         ),
         'l10n_diffsource' => array(
