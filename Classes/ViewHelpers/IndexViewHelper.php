@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
+use TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper;
 
 /**
  * IndexViewHelper

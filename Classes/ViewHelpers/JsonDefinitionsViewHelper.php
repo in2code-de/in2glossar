@@ -29,7 +29,7 @@ use In2code\In2glossar\Domain\Model\Definition;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
+use TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper;
 
 /**
  * JsonDefinitionsViewHelper
