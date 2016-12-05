@@ -25,11 +25,7 @@ namespace In2code\In2glossar\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2glossar\Domain\Model\Definition;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper;
 
 /**
@@ -56,30 +52,28 @@ class IndexViewHelper extends RenderViewHelper
     }
 
     /**
-     * @param QueryResultInterface|ObjectStorage|array $collection
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('collection', 'array', 'The iteratable object containing defintions', true);
+    }
+
+    /**
      * @return string
      */
-    public function render($collection = null)
+    public function render()
     {
-        $this->buildIndex($collection);
-        $output = '';
+        $this->buildIndex($this->arguments['collection']);
         $this->templateVariableContainer->add('index', $this->index);
         $output = $this->renderChildren();
         $this->templateVariableContainer->remove('index');
         return $output;
-
-//        foreach ($index as $char => $items) {
-//            $this->templateVariableContainer->add('char', $char);
-//            $this->templateVariableContainer->add('items', $items);
-//            $output.= $this->renderChildren();
-//            $this->templateVariableContainer->remove('char');
-//            $this->templateVariableContainer->remove('items');
-//        }
-//        return $output;
     }
 
     /**
-     *
+     * @param array $collection
      */
     protected function buildIndex($collection)
     {

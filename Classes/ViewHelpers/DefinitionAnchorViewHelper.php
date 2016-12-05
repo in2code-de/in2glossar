@@ -37,11 +37,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class DefinitionAnchorViewHelper extends AbstractViewHelper
 {
     /**
-     * @param Definition $definition
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('definition', Definition::class, 'The definition object');
+    }
+
+    /**
      * @return string
      */
-    public function render(Definition $definition = null)
+    public function render()
     {
+        $definition = $this->arguments['definition'];
         if ($definition === null) {
             $definition = $this->renderChildren();
             if ($definition === null) {
