@@ -25,29 +25,57 @@ namespace In2code\In2glossar\ViewHelpers\Be;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * JsonDefinitionsViewHelper
+ * LinkViewHelper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class LinkViewHelper extends AbstractViewHelper
+class LinkViewHelper extends AbstractTagBasedViewHelper
 {
     /**
-     * @param string $parameters
-     * @param string $returnUrl
+     * @var string
+     */
+    protected $tagName = 'a';
+
+    /**
+     * Arguments initialization
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
+    }
+
+    /**
      * @return string
      */
-    public function render($parameters, $returnUrl = '')
+    public function render()
     {
-        $uri = 'alt_doc.php?' . $parameters;
-        if (empty($returnUrl)) {
-            $returnUrl = $this->buildReturnUrl();
-        }
-        $uri .= '&returnUrl=' . rawurlencode($returnUrl);
-        return $uri;
+        $settings = $this->templateVariableContainer->get('settings');
+        $id = $settings['storagePid'];
+        $uri = BackendUtility::getModuleUrl('record_edit', [
+            'id' => $id,
+            'edit' => [
+                'tx_in2glossar_domain_model_definition' => [
+                    $id => 'new',
+                ],
+            ],
+            'returnUrl' => $this->buildReturnUrl(),
+        ]);
+
+        $this->tag->addAttribute('href', '#');
+        $this->tag->addAttribute('onclick', 'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($uri) . '; return false;');
+
+        $this->tag->setContent($this->renderChildren());
+        return $this->tag->render();
+
     }
 
     /**
