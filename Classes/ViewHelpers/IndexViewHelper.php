@@ -26,16 +26,23 @@ namespace In2code\In2glossar\ViewHelpers;
  ***************************************************************/
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * IndexViewHelper
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- *
  */
-class IndexViewHelper extends RenderViewHelper
+class IndexViewHelper extends AbstractViewHelper
 {
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
     /**
      * @var array
      */
@@ -44,20 +51,11 @@ class IndexViewHelper extends RenderViewHelper
     /**
      * @return void
      */
-    public function initializeObject()
-    {
-        foreach (range('A', 'Z') as $char) {
-            $this->index[$char] = array();
-        }
-    }
-
-    /**
-     * @return void
-     */
     public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('collection', 'array', 'The iteratable object containing defintions', true);
+        $this->registerArgument('as', 'string', '', true);
     }
 
     /**
@@ -66,9 +64,9 @@ class IndexViewHelper extends RenderViewHelper
     public function render()
     {
         $this->buildIndex($this->arguments['collection']);
-        $this->templateVariableContainer->add('index', $this->index);
+        $this->templateVariableContainer->add($this->arguments['as'], $this->index);
         $output = $this->renderChildren();
-        $this->templateVariableContainer->remove('index');
+        $this->templateVariableContainer->remove($this->arguments['as']);
         return $output;
     }
 
@@ -77,9 +75,12 @@ class IndexViewHelper extends RenderViewHelper
      */
     protected function buildIndex($collection)
     {
+        foreach (range('a', 'z') as $char) {
+            $this->index[$char] = array();
+        }
         foreach ($collection as $item) {
             /* @var $item AbstractEntity */
-            $firstChar = strtoupper(substr($item->_getProperty('word'), 0, 1));
+            $firstChar = strtolower(substr($item->_getProperty('word'), 0, 1));
             $this->index[$firstChar][] = $item;
         }
     }
