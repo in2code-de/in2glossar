@@ -23,7 +23,10 @@
 			</trans-unit>
 
 			<trans-unit id="tt_content.tx_in2glossar_exclude">
-				<source>Exclude from Glossar</source>
+				<source>Glossar tooltip for content element</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_in2glossar_exclude.I.0">
+				<source>Disable</source>
 			</trans-unit>
 
 			<trans-unit id="in2glossar">

@@ -29,8 +29,12 @@
 			</trans-unit>
 
 			<trans-unit id="tt_content.tx_in2glossar_exclude">
-				<source>Exclude from Glossar</source>
-				<target>Ausgenommen vom Glossar</target>
+				<source>Glossar tooltip for content element</source>
+				<target>Glossar Tooltip für Content Element</target>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_in2glossar_exclude.I.0">
+				<source>Disable</source>
+				<source>Deaktiviert</source>
 			</trans-unit>
 
 			<trans-unit id="in2glossar">
