@@ -26,6 +26,11 @@ defined('TYPO3_MODE') or die();
     'after:hidden'
 );
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('in2glossar', 'Configuration/TypoScript', 'In2glossar: Main Template');
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('In2code.in2glossar', 'Main', 'In2glossar: List- & Definition-View');
+
+
 //\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
 //    'tt_content',
 //    'visibility',
