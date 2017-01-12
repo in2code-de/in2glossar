@@ -37,7 +37,7 @@ return [
                 synonyms,
                 short_description,
                 description,
-            --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
                 starttime,
                 endtime'
         ],
