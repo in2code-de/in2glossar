@@ -28,10 +28,10 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                sys_language_uid;;;;1-1-1,
+                sys_language_uid,
                 l10n_parent,
                 l10n_diffsource,
-                hidden;;1,
+                hidden,
                 tooltip,
                 word,
                 synonyms,
@@ -42,9 +42,7 @@ return [
                 endtime'
         ],
     ],
-    'palettes' => [
-        '1' => ['showitem' => ''],
-    ],
+    'palettes' => [],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => 1,
