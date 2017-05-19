@@ -1,20 +1,52 @@
 <f:layout name="default" />
 {namespace glossar=In2code\In2glossar\ViewHelpers}
 
+<f:section name="index-item">
+	<f:if condition="{groupItems}">
+		<f:then>
+			<li><a href="#glossary__item--{groupName}">{groupName->f:format.case()}</a></li>
+		</f:then>
+		<f:else>
+			<li>{groupName->f:format.case()}</li>
+		</f:else>
+	</f:if>
+</f:section>
+
 <f:section name="list-item">
-	<dt id="{definition->glossar:definitionAnchor()}">{definition.word}</dt>
-	<dd>
-		<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
-	</dd>
+	<li id="{definition->glossar:definitionAnchor()}">
+		<h2>{definition.word}</h2>
+		<div>
+			<p><f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html></p>
+		</div>
+	</li>
 </f:section>
 
 <f:section name="main">
-
-	<glossar:index collection="{definitions}" />
-	<dl class="in2glossar-list">
-		<f:for each="{definitions}" as="definition">
-			<f:render section="list-item" arguments="{_all}" />
-		</f:for>
-	</dl>
-
+	<glossar:index collection="{definitions}" as="index">
+		<glossar:indexGroup definitionGroups="{index}" as="groups">
+			<nav class="glossary__search" id="glossary__search">
+				<ul class="glossary__search-list">
+					<f:for each="{groups}" key="groupName" as="groupItems">
+						<f:render section="index-item" arguments="{_all}" />
+					</f:for>
+				</ul>
+			</nav>
+			<ul class="glossary__list">
+				<f:for each="{groups}" key="groupName" as="groupItems">
+					<f:if condition="{groupItems}">
+						<li class="glossary__item" id="glossary__item--{groupName}">
+							<header class="glossary__header">{groupName->f:format.case()}
+								<a class="glossary__backtop" href="#glossary__search">Nach oben</a>
+							</header>
+							<ul>
+								<f:for each="{groupItems}" as="definition">
+									<f:render section="list-item" arguments="{_all}" />
+								</f:for>
+							</ul>
+						</li>
+					</f:if>
+				</f:for>
+			</ul>
+		</glossar:indexGroup>
+	</glossar:index>
 </f:section>
