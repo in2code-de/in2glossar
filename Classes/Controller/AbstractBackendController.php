@@ -25,6 +25,7 @@ namespace In2code\In2glossar\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -59,9 +60,11 @@ abstract class AbstractBackendController extends ActionController
             $severity,
             $storeInSession
         );
+        /* @var $flashMessageService FlashMessageService */
         $flashMessageService = $this->objectManager->get(
             FlashMessageService::class
         );
+        /* @var $messageQueue FlashMessageQueue */
         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($message);
     }

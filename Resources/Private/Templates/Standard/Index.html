@@ -1,9 +1,8 @@
 {namespace glossar=In2code\In2glossar\ViewHelpers}
 <script data-in2glossar="true">
-	{glossar:jsonDefinitions(definitions:definitions)}
+	{glossar:jsonDefinitions(definitions:definitions)->f:format.raw()}
 </script>
 <script>
-<![CDATA[
 	(function($) {
 		"use strict";
 
@@ -11,10 +10,10 @@
 			$.in2code = {};
 		}
 
-		$.in2code.in2glossar = {]]>
-			excludeSelector: '{settings.excludeSelector}',
+		$.in2code.in2glossar = {
+			excludeSelector: '<f:format.raw>{settings.excludeSelector}</f:format.raw>',
 			iconTag: ''
-		<![CDATA[};
+		};
 
 		/**
 		 * Initialize Plugin
@@ -24,5 +23,4 @@
 		});
 
 	})(jQuery);
-]]>
 </script>
