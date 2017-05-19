@@ -66,23 +66,6 @@ class BackendController extends AbstractBackendController
      */
     public function indexAction()
     {
-//        $definitions = $this->definitionRepository->findAll();
-//        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($definitions);
-    }
-
-    /**
-     * @return void
-     */
-    public function newAction()
-    {
-
-    }
-
-    /**
-     * @return void
-     */
-    public function createAction()
-    {
 
     }
 }

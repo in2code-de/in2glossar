@@ -27,24 +27,28 @@ namespace In2code\In2glossar\ViewHelpers;
 
 use In2code\In2glossar\Domain\Model\Definition;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * JsonDefinitionsViewHelper
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- *
  */
-class JsonDefinitionsViewHelper extends RenderViewHelper
+class JsonDefinitionsViewHelper extends AbstractViewHelper
 {
     /**
-     * @param QueryResultInterface|ObjectStorage|array $definitions
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('definitions', 'array', 'The iteratable object containing defintions', true);
+    }
+
+    /**
      * @return string|null json value
      */
-    public function render($definitions = null)
+    public function render()
     {
+        $definitions = $this->arguments['definitions'];
         if ($definitions === null) {
             $definitions = $this->renderChildren();
             if ($definitions === null) {
@@ -65,6 +69,18 @@ class JsonDefinitionsViewHelper extends RenderViewHelper
             );
         }
         return json_encode($result);
+    }
+
+    /**
+     * @param array $arguments
+     * @return array
+     */
+    protected function loadSettingsIntoArguments(array $arguments = array())
+    {
+        if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
+            $arguments['settings'] = $this->templateVariableContainer->get('settings');
+        }
+        return $arguments;
     }
 
     /**

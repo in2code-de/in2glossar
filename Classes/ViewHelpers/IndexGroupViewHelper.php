@@ -25,13 +25,13 @@ namespace In2code\In2glossar\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * IndexViewHelper
+ * IndexGroupViewHelper
  */
-class IndexViewHelper extends AbstractViewHelper
+class IndexGroupViewHelper extends AbstractViewHelper
 {
     /**
      * @var boolean
@@ -44,17 +44,20 @@ class IndexViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var array
-     */
-    protected $index = array();
-
-    /**
      * @return void
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('collection', 'array', 'The iteratable object containing defintions', true);
+        $this->registerArgument('definitionGroups', 'array', 'The iteratable object containing defintion groups', true);
+        $this->registerArgument('indexGroups', 'array', 'The groups', false, [
+            'a-d' => 'a,b,c,d',
+            'e-h' => 'e,f,g,h',
+            'i-l' => 'i,j,k,l',
+            'm-p' => 'm,n,o,p',
+            'q-t' => 'q,r,s,t',
+            'u-z' => 'u,v,w,x,y,z',
+        ]);
         $this->registerArgument('as', 'string', '', true);
     }
 
@@ -63,25 +66,33 @@ class IndexViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $this->buildIndex($this->arguments['collection']);
-        $this->templateVariableContainer->add($this->arguments['as'], $this->index);
+        $groups = $this->groupDefinitions();
+        $this->templateVariableContainer->add($this->arguments['as'], $groups);
         $output = $this->renderChildren();
         $this->templateVariableContainer->remove($this->arguments['as']);
         return $output;
     }
 
     /**
-     * @param array $collection
+     * @return array
      */
-    protected function buildIndex($collection)
+    protected function groupDefinitions()
     {
-        foreach (range('a', 'z') as $char) {
-            $this->index[$char] = array();
+        $group = array();
+        $definitionGroups = $this->arguments['definitionGroups'];
+        foreach ($this->arguments['indexGroups'] as $indexGroupKey => $indexGroup) {
+            $group[$indexGroupKey] = [];
+            $subgroups = GeneralUtility::trimExplode(',', $indexGroup);
+            foreach ($subgroups as $subgroup) {
+                $subgroup = strtolower($subgroup);
+                if (is_array($definitionGroups[$subgroup])) {
+                    $group[$indexGroupKey] = array_merge(
+                        $group[$indexGroupKey],
+                        $definitionGroups[$subgroup]
+                    );
+                }
+            }
         }
-        foreach ($collection as $item) {
-            /* @var $item AbstractEntity */
-            $firstChar = strtolower(substr($item->_getProperty('word'), 0, 1));
-            $this->index[$firstChar][] = $item;
-        }
+        return $group;
     }
 }

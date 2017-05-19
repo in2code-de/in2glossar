@@ -19,6 +19,12 @@ plugin.tx_in2glossar {
 		}
 	}
 }
+#lib.fluidContent {
+#	layoutRootPaths.5 = EXT:in2glossar/Resources/Private/Extensions/FluidContent/Layouts/
+#	templateRootPaths.5 = EXT:in2glossar/Resources/Private/Extensions/FluidContent/Templates/
+#	partialRootPaths.5 = EXT:in2glossar/Resources/Private/Extensions/FluidContent/Partials/
+#}
+
 module.tx_in2glossar < plugin.tx_in2glossar
 
 lib.glossarData = USER

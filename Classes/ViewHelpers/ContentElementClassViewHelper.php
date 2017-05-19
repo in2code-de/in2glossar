@@ -25,39 +25,53 @@ namespace In2code\In2glossar\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2glossar\Domain\Model\Definition;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * IndexViewHelper
+ * ContentElementClassViewHelper
  */
-class DefinitionAnchorViewHelper extends AbstractViewHelper
+class ContentElementClassViewHelper extends AbstractViewHelper
 {
     /**
-     * @return void
+     *
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('definition', Definition::class, 'The definition object');
+        $this->registerArgument('data', 'array', 'The data array of the content element', true);
     }
 
     /**
+	 * @return string
+	 */
+	public function render()
+	{
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+	}
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render()
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $definition = $this->arguments['definition'];
-        if ($definition === null) {
-            $definition = $this->renderChildren();
-            if ($definition === null) {
+        $data = $arguments['data'];
+        if ($data === null) {
+            $data = $renderChildrenClosure();
+            if ($data === null) {
                 return '';
             }
         }
-        return implode('-', array(
-            'in2glossar',
-            'definition',
-            $definition->getUid()
-        ));
+        if ($data['tx_in2glossar_exclude'] == 1) {
+            return 'in2glossar-excluded';
+        }
+        return '';
     }
 }
