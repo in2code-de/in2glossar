@@ -71,6 +71,7 @@
 		var settings = $.extend({
 			selectors: 'body',
 			allowedSubtypes: '*',
+			disallowedSubtypes: 'script',
 			attributeSelector: 'data-glossar',
 			excludeSelector: 'div.in2glossar-container',
 			iconTag: ''
@@ -105,7 +106,7 @@
 		 */
 		var traverse = function($elem, callback) {
 			$elem.contents().each(function() {
-				if ($(this).is(settings.allowedSubtypes) && !$(this).is(settings.excludeSelector)) {
+				if ($(this).is(settings.allowedSubtypes) && !$(this).is(settings.excludeSelector) && !$(this).is(settings.disallowedSubtypes)) {
 					traverse($(this), callback);
 				} else if (this.nodeType == 3) {
 					callback(this);
@@ -117,10 +118,13 @@
 			var re = new RegExp('(?:^|\\b)(' + regex + ')(?!\\w)', 'ig');
 			$(settings.selectors).each(function() {
 				traverse($(this), function(textnode) {
-					var processedHtml = textnode.textContent.replace(re, function(match, item , offset, string) {
-						return '<abbr class="in2glossar-abbr" ' + settings.attributeSelector + '="' + term + '">' + match + settings.iconTag + '</abbr>';
-					});
-					$(textnode).replaceWith(processedHtml);
+					if (textnode.textContent.match(re)) {
+						var processedHtml = textnode.textContent.replace(re, function(match, item , offset, string) {
+							return '<abbr class="in2glossar-abbr" ' + settings.attributeSelector + '="' + term + '">' + match + settings.iconTag + '</abbr>';
+						});
+
+						$(textnode).replaceWith(processedHtml);
+					}
 				});
 			});
 		});
