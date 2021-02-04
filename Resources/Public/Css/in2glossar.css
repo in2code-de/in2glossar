@@ -1,12 +1,21 @@
-#in2glossar-overlay {
-	position: absolute;
-	width: 300px;
-	padding: 20px;
-	background: #fff;
-	border: 1px solid #000;
-	border-radius: 10px;
+abbr.in2glossar-abbr {
+    border-bottom: 2px dotted #5e5e5d;
+    cursor: help;
 }
 
-.in2glossar-container {
-	
+abbr.in2glossar-abbr > span {
+    display: none;
+}
+
+abbr.in2glossar-abbr:hover > span {
+    display: inline-block;
+    position: absolute;
+    min-width: 300px;
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+    background-color: #0A246A;
+    z-index: 1070;
+    margin-top: 30px;
+    margin-left: -30px;
 }

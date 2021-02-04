@@ -1,22 +1,31 @@
 {
     "name": "in2code/in2glossar",
-    "description": "Glossar functionality for TYPO3 Frontend with backend module",
+    "description": "Extended TYPO3 glossary and tooltip functionality",
+    "keywords": [
+        "glossary",
+        "tooltip",
+        "faq",
+        "qa"
+    ],
+    "homepage": "https://github.com/in2code-de/in2glossar",
     "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name": "Dominique Kreemers",
-            "email": "dominique.kreemers@in2code.de",
-            "homepage": "https://www.in2code.de",
-            "role": "Developer"
+            "name": "Alex Kellner",
+            "email": "alexander.kellner@in2code.de",
+            "homepage": "https://www.in2code.de"
         }
     ],
     "require": {
-        "typo3/cms-core": ">=6.2.0,<9.0.0",
-        "php": ">=5.3.0"
+        "typo3/cms-core": "^8.7",
+        "php": "^7.2",
+        "ext-dom": "*",
+        "ext-libxml": "*"
     },
     "autoload": {
         "psr-4": {
-            "In2code\\In2glossar\\": "Classes"
+            "In2code\\In2glossar\\": "Classes/"
         }
     }
 }

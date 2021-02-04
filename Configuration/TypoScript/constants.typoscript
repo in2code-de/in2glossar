@@ -3,8 +3,10 @@ plugin.tx_in2glossar {
 	settings {
 		# cat=plugin.tx_in2glossar/links/a; type=int+; label=LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:constants.targetPage
 		targetPage =
+
 		# cat=plugin.tx_in2glossar/links/b; type=int+; label=LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:constants.storagePid
 		storagePid =
+
 		# cat=plugin.tx_in2glossar/javascript/c; type=string; label=LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:constants.excludeSelectors
 		excludeSelector = div.in2glossar-container, .in2glossar-excluded, navigation
 	}

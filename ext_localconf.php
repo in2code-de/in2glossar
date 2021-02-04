@@ -1,30 +1,41 @@
 <?php
-defined('TYPO3_MODE') or die('Access denied.');
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
-/**
- * Register icons
- */
-\In2code\In2template\Utility\IconUtility::registerSvgIcons([
-    'extension-in2glossar-definition' => 'EXT:in2glossar/Resources/Public/Icons/definition.svg',
-]);
+call_user_func(
+    function () {
 
-/**
- * Include Frontend Plugins
- */
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.' . $_EXTKEY,
-    'Main',
-    array(
-        'Standard' => 'list',
-    ),
-    array()
-);
+        /**
+         * Register Icons
+         */
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Imaging\IconRegistry::class
+        );
+        $iconRegistry->registerIcon(
+            'extension-in2glossar-definition',
+            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+            ['source' => 'EXT:in2glossar/Resources/Public/Icons/definition.svg']
+        );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.' . $_EXTKEY,
-    'Data',
-    array(
-        'Standard' => 'index',
-    ),
-    array()
+        /**
+         * Include Frontend Plugins
+         */
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'In2code.in2glossar',
+            'Main',
+            [
+                'Standard' => 'list',
+            ],
+            []
+        );
+
+        /**
+         * Add tooltips to rendered frontend
+         */
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][]
+            = \In2code\In2glossar\Hooks\ContentPostProcessor::class . '->render';
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][]
+            = \In2code\In2glossar\Hooks\ContentPostProcessor::class . '->render';
+    }
 );
