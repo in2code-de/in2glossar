@@ -65,7 +65,7 @@ class ContentPostProcessor implements SingletonInterface
     protected function replaceInTags(string $body): string
     {
         $dom = new \DOMDocument();
-        $dom->loadHTML(
+        @$dom->loadHTML(
             $this->wrapHtmlWithMainTags($body),
             LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
         );
