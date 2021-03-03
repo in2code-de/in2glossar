@@ -1,24 +1,19 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "in2glossar".
-########################################################################
-
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'In2glossar',
-    'description' => 'Provides a glossary for TYPO3',
-    'category' => 'misc',
-    'author' => 'in2code GmbH',
-    'author_email' => 'service@in2code.de',
-    'dependencies' => 'extbase, fluid',
-    'state' => 'stable',
+    'description' => 'Extended TYPO3 glossary and tooltip functionality',
+    'category' => 'plugin',
+    'author' => 'Alex Kellner',
+    'author_email' => 'alexander.kellner@in2code.de',
     'author_company' => 'in2code GmbH',
-    'version' => '1.0.1',
-    'constraints' => array(
-        'depends' => array(
-            'typo3' => '6.2.0-8.7.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+    'state' => 'stable',
+    'version' => '1.1.0',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '8.7.0-8.7.99',
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

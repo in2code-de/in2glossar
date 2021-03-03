@@ -1,6 +1,3 @@
-#
-# Table structure for table 'tx_in2glossar_domain_model_definition'
-#
 CREATE TABLE tx_in2glossar_domain_model_definition (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -28,9 +25,6 @@ CREATE TABLE tx_in2glossar_domain_model_definition (
 	KEY language (l10n_parent,sys_language_uid)
 );
 
-#
-# Table structure for table 'tt_content'
-#
 CREATE TABLE tt_content (
 	tx_in2glossar_exclude tinyint(4) unsigned DEFAULT '0' NOT NULL
 );

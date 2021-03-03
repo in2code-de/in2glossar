@@ -1,0 +1,33 @@
+plugin.tx_in2glossar {
+	settings {
+		targetPage = {$plugin.tx_in2glossar.settings.targetPage}
+		storagePid = {$plugin.tx_in2glossar.settings.storagePid}
+	}
+	persistence {
+		storagePid = {$plugin.tx_in2glossar.settings.storagePid}
+	}
+	view {
+		layoutRootPaths {
+			1 = EXT:in2glossar/Resources/Private/Layouts/
+		}
+		templateRootPaths {
+			1 = EXT:in2glossar/Resources/Private/Templates/
+		}
+		partialRootPaths {
+			1 = EXT:in2glossar/Resources/Private/Partials/
+		}
+	}
+}
+module.tx_in2glossar < plugin.tx_in2glossar
+
+# Add css for tooltip functions (if needed)
+# page.includeCSS.tx_in2glossar = EXT:in2glossar/Resources/Public/Css/in2glossar.css
+
+tt_content.stdWrap.innerWrap.cObject.default.20 {
+	1469530480 = TEXT
+	1469530480 {
+		value = in2glossar-excluded
+		noTrimWrap = || |
+		if.isTrue.field = tx_in2glossar_exclude
+	}
+}
