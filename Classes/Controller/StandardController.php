@@ -15,19 +15,20 @@ class StandardController extends ActionController
     protected $definitionRepository;
 
     /**
+     * StandardController constructor.
+     * @param DefinitionRepository $definitionRepository
+     */
+    public function __construct(DefinitionRepository $definitionRepository)
+    {
+        $this->definitionRepository = $definitionRepository;
+    }
+
+    /**
      * @return void
      */
     public function listAction()
     {
         $definitions = $this->definitionRepository->findAll();
         $this->view->assign('definitions', $definitions);
-    }
-
-    /**
-     * @param DefinitionRepository $definitionRepository
-     */
-    public function injectDefinitionRepository(DefinitionRepository $definitionRepository)
-    {
-        $this->definitionRepository = $definitionRepository;
     }
 }

@@ -12,13 +12,20 @@
     "license": "GPL-2.0-or-later",
     "authors": [
         {
+            "name": "Sandra Pohl",
+            "email": "sandra.pohl@in2code.de",
+            "homepage": "https://www.in2code.de",
+            "role": "Product owner"
+        },
+        {
             "name": "Alex Kellner",
             "email": "alexander.kellner@in2code.de",
-            "homepage": "https://www.in2code.de"
+            "homepage": "https://www.in2code.de",
+            "role": "Technical owner"
         }
     ],
     "require": {
-        "typo3/cms-core": "^8.7",
+        "typo3/cms-core": "^10.4",
         "php": "^7.2",
         "ext-dom": "*",
         "ext-libxml": "*"
@@ -26,6 +33,11 @@
     "autoload": {
         "psr-4": {
             "In2code\\In2glossar\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "in2glossar"
         }
     }
 }
