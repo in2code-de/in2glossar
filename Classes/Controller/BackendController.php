@@ -14,7 +14,7 @@ class BackendController extends AbstractBackendController
      */
     public function initializeAction()
     {
-        if ($this->getStoragePid() === false) {
+        if ($this->isStoragePidGiven() === false) {
             $this->addFlashMessage('Storage Pid is not set', '', AbstractMessage::ERROR);
         }
     }

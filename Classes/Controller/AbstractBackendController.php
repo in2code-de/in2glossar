@@ -27,6 +27,7 @@ abstract class AbstractBackendController extends ActionController
         $severity = AbstractMessage::OK,
         $storeInSession = true
     ) {
+        /** @var FlashMessage $message */
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
             $messageBody,
@@ -38,7 +39,6 @@ abstract class AbstractBackendController extends ActionController
         $flashMessageService = $this->objectManager->get(
             FlashMessageService::class
         );
-        /* @var $messageQueue FlashMessageQueue */
         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($message);
     }
@@ -46,13 +46,9 @@ abstract class AbstractBackendController extends ActionController
     /**
      * @return bool
      */
-    protected function getStoragePid()
+    protected function isStoragePidGiven(): bool
     {
-        if (MathUtility::canBeInterpretedAsInteger($this->settings['storagePid'])
-            && $this->settings['storagePid'] > 0
-        ) {
-            return $this->settings['storagePid'];
-        }
-        return false;
+        return MathUtility::canBeInterpretedAsInteger($this->settings['storagePid'])
+            && $this->settings['storagePid'] > 0;
     }
 }

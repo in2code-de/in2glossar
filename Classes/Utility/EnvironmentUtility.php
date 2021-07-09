@@ -4,7 +4,6 @@ namespace In2code\In2glossar\Utility;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -61,20 +60,7 @@ class EnvironmentUtility
      */
     protected static function getExtensionConfiguration(): array
     {
-        $configuration = [];
-        if (self::isTypo3OlderThen9()) {
-            $configVariables = self::getTypo3ConfigurationVariables();
-            // @extensionScannerIgnoreLine We still need to access extConf for TYPO3 8.7
-            $possibleConfig = unserialize((string)$configVariables['EXT']['extConf']['in2glossar']);
-            if (!empty($possibleConfig) && is_array($possibleConfig)) {
-                $configuration = $possibleConfig;
-            }
-        } else {
-            // @codeCoverageIgnoreStart
-            $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('powermail');
-            // @codeCoverageIgnoreEnd
-        }
-        return $configuration;
+        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('in2glossar');
     }
 
     /**
@@ -86,16 +72,5 @@ class EnvironmentUtility
     protected static function getTypo3ConfigurationVariables(): array
     {
         return (array)$GLOBALS['TYPO3_CONF_VARS'];
-    }
-
-    /**
-     * Decide if TYPO3 8.7 is used (true) or newer TYPO3 (false)
-     *
-     * @return bool
-     * @codeCoverageIgnore
-     */
-    protected static function isTypo3OlderThen9(): bool
-    {
-        return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 9000000;
     }
 }
