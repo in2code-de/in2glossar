@@ -2,13 +2,11 @@
 
 return [
     'ctrl' => [
-        'title' =>
-            'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition',
+        'title' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition',
         'label' => 'word',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'sortby' => 'word',
         'dividers2tabs' => true,
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
@@ -24,33 +22,46 @@ return [
         ],
         'searchFields' => 'word,short_description,description',
     ],
+    'interface' => [
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, word, synonyms, short_description, description',
+    ],
     'types' => [
         '1' => [
-            'showitem' =>
-                'sys_language_uid,l10n_parent,l10n_diffsource,hidden,tooltip,word,synonyms,short_description,' .
-                'description,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,' .
-                'starttime,endtime'
+            'showitem' => '
+                sys_language_uid,
+                l10n_parent,
+                l10n_diffsource,
+                hidden,
+                tooltip,
+                word,
+                synonyms,
+                short_description,
+                description,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+                starttime,
+                endtime'
         ],
     ],
     'palettes' => [],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
                 ],
             ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -58,8 +69,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_in2glossar_domain_model_definition',
-                'foreign_table_where' => 'AND tx_in2glossar_domain_model_definition.pid=###CURRENT_PID### ' .
-                    'AND tx_in2glossar_domain_model_definition.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND tx_in2glossar_domain_model_definition.pid=###CURRENT_PID### AND tx_in2glossar_domain_model_definition.sys_language_uid IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -70,7 +80,7 @@ return [
         'hidden' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
             ],
@@ -78,48 +88,46 @@ return [
         'starttime' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
                 'size' => 13,
+                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ],
-                'renderType' => 'inputDateTime',
             ],
         ],
         'endtime' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
                 'size' => 13,
+                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ],
-                'renderType' => 'inputDateTime',
             ],
         ],
         'tooltip' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.tooltip',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.tooltip',
             'config' => [
                 'type' => 'check',
             ],
         ],
         'word' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.word',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.word',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -129,8 +137,7 @@ return [
         ],
         'synonyms' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.synonyms',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.synonyms',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
@@ -140,8 +147,7 @@ return [
         ],
         'short_description' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.short_description',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.short_description',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
@@ -151,15 +157,13 @@ return [
         ],
         'description' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.description',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 8,
-                'enableRichtext' => true,
-                'richtextConfiguration' => 'default',
-            ]
+            ],
+            'defaultExtras' => 'richtext[]'
         ],
     ],
 ];

@@ -1,22 +1,18 @@
 <?php
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-defined('TYPO3_MODE') || die();
+defined('TYPO3_MODE') or die();
 
-ExtensionManagementUtility::addTCAcolumns(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
     [
         'tx_in2glossar_exclude' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tt_content.tx_in2glossar_exclude',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tt_content.tx_in2glossar_exclude',
             'config' => [
                 'type' => 'check',
                 'items' => [
                     '1' => [
-                        'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                            'tt_content.tx_in2glossar_exclude.I.0',
+                        'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tt_content.tx_in2glossar_exclude.I.0',
                     ],
                 ],
             ],
@@ -24,20 +20,21 @@ ExtensionManagementUtility::addTCAcolumns(
     ]
 );
 
-ExtensionManagementUtility::addToAllTCAtypes(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     'tx_in2glossar_exclude',
     '',
     'after:hidden'
 );
 
-ExtensionManagementUtility::addStaticFile(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'in2glossar',
     'Configuration/TypoScript',
     'In2glossar: Main Template'
 );
-ExtensionUtility::registerPlugin(
-    'In2glossar',
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'In2code.in2glossar',
     'Main',
     'In2glossar: List- & Definition-View'
 );
