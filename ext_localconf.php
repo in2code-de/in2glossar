@@ -22,10 +22,10 @@ call_user_func(
          * Include Frontend Plugins
          */
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'In2glossar',
+            'In2code.In2glossar',
             'Main',
             [
-                \In2code\In2glossar\Controller\StandardController::class => 'list',
+                'Standard' => 'list',
             ],
             []
         );

@@ -7,12 +7,12 @@ call_user_func(
     function () {
         if (TYPO3_MODE === 'BE') {
             \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-                'In2glossar',
+                'In2code.In2glossar',
                 'web',
                 'mod1',
                 '',
                 [
-                    \In2code\In2glossar\Controller\BackendController::class => 'index',
+                    'Backend' => 'index',
                 ],
                 [
                     'access' => 'user,group',
