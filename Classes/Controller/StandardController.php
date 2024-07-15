@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace In2code\In2glossar\Controller;
 
 use In2code\In2glossar\Domain\Repository\DefinitionRepository;

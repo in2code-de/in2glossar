@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace In2code\In2glossar\ViewHelpers;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
