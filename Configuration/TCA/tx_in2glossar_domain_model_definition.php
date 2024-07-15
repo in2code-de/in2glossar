@@ -44,7 +44,7 @@ return [
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
                 ],
             ],
         ],
@@ -159,7 +159,7 @@ return [
                 'rows' => 8,
                 'enableRichtext' => true,
                 'richtextConfiguration' => 'default',
-            ]
+            ],
         ],
     ],
 ];
