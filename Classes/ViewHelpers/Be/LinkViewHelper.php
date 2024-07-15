@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace In2code\In2glossar\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -44,13 +46,13 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
                     ],
                 ],
                 'returnUrl' => $this->buildReturnUrl(),
-            ]
+            ],
         );
 
         $this->tag->addAttribute('href', '#');
         $this->tag->addAttribute(
             'onclick',
-            'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($uri) . '; return false;'
+            'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($uri) . '; return false;',
         );
 
         $this->tag->setContent($this->renderChildren());

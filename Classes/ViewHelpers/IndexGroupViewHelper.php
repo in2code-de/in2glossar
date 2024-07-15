@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace In2code\In2glossar\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -14,7 +16,6 @@ class IndexGroupViewHelper extends AbstractViewHelper
      * @var boolean
      */
     protected $escapeChildren = false;
-
     /**
      * @var boolean
      */
@@ -55,7 +56,7 @@ class IndexGroupViewHelper extends AbstractViewHelper
      */
     protected function groupDefinitions()
     {
-        $group = array();
+        $group = [];
         $definitionGroups = $this->arguments['definitionGroups'];
         foreach ($this->arguments['indexGroups'] as $indexGroupKey => $indexGroup) {
             $group[$indexGroupKey] = [];
@@ -65,7 +66,7 @@ class IndexGroupViewHelper extends AbstractViewHelper
                 if (is_array($definitionGroups[$subgroup])) {
                     $group[$indexGroupKey] = array_merge(
                         $group[$indexGroupKey],
-                        $definitionGroups[$subgroup]
+                        $definitionGroups[$subgroup],
                     );
                 }
             }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace In2code\In2glossar\Domain\Model;
@@ -11,27 +12,22 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class Definition extends AbstractEntity
 {
     const TABLE_NAME = 'tx_in2glossar_domain_model_definition';
-
     /**
      * @var bool
      */
     protected $tooltip;
-
     /**
      * @var string
      */
     protected $word;
-
     /**
      * @var string
      */
     protected $synonyms;
-
     /**
      * @var string
      */
     protected $shortDescription;
-
     /**
      * @var string
      */

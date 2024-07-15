@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace In2code\In2glossar\Utility;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -17,15 +19,16 @@ class EnvironmentUtility
     public static function getExcludedTagNames(): array
     {
         $configuration = self::getExtensionConfiguration();
-        return GeneralUtility::trimExplode(',', (string)$configuration['excludedTagNames'], true);
+        return GeneralUtility::trimExplode(',', (string) $configuration['excludedTagNames'], true);
     }
+
     /**
      * @return array
      */
     public static function getExcludedClassNames(): array
     {
         $configuration = self::getExtensionConfiguration();
-        return GeneralUtility::trimExplode(',', (string)$configuration['excludedClassNames'], true);
+        return GeneralUtility::trimExplode(',', (string) $configuration['excludedClassNames'], true);
     }
 
     /**
@@ -33,7 +36,7 @@ class EnvironmentUtility
      */
     public static function getTypeNum(): int
     {
-        return (int)self::getTyposcriptFrontendController()->type;
+        return (int) self::getTyposcriptFrontendController()->type;
     }
 
     /**
@@ -71,6 +74,6 @@ class EnvironmentUtility
      */
     protected static function getTypo3ConfigurationVariables(): array
     {
-        return (array)$GLOBALS['TYPO3_CONF_VARS'];
+        return (array) $GLOBALS['TYPO3_CONF_VARS'];
     }
 }

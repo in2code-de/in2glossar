@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace In2code\In2glossar\Controller;
 
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -27,9 +29,7 @@ class BackendController extends ActionController
     /**
      * @return void
      */
-    public function indexAction()
-    {
-    }
+    public function indexAction() {}
 
     /**
      * @param string $messageBody
@@ -49,11 +49,11 @@ class BackendController extends ActionController
             $messageBody,
             $messageTitle,
             $severity,
-            $storeInSession
+            $storeInSession,
         );
         /* @var $flashMessageService FlashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(
-            FlashMessageService::class
+            FlashMessageService::class,
         );
         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($message);

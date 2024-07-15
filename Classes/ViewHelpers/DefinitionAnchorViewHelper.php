@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace In2code\In2glossar\ViewHelpers;
 
 use In2code\In2glossar\Domain\Model\Definition;
@@ -31,10 +33,10 @@ class DefinitionAnchorViewHelper extends AbstractViewHelper
                 return '';
             }
         }
-        return implode('-', array(
+        return implode('-', [
             'in2glossar',
             'definition',
-            $definition->getUid()
-        ));
+            $definition->getUid(),
+        ]);
     }
 }

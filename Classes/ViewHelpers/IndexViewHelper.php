@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace In2code\In2glossar\ViewHelpers;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -14,16 +16,14 @@ class IndexViewHelper extends AbstractViewHelper
      * @var boolean
      */
     protected $escapeChildren = false;
-
     /**
      * @var boolean
      */
     protected $escapeOutput = false;
-
     /**
      * @var array
      */
-    protected $index = array();
+    protected $index = [];
 
     /**
      * @return void
@@ -53,7 +53,7 @@ class IndexViewHelper extends AbstractViewHelper
     protected function buildIndex($collection)
     {
         foreach (range('a', 'z') as $char) {
-            $this->index[$char] = array();
+            $this->index[$char] = [];
         }
         foreach ($collection as $item) {
             /* @var $item AbstractEntity */

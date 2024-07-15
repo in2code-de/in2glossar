@@ -1,11 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace In2code\In2glossar\Hooks;
 
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMText;
+use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
 use In2code\In2glossar\Utility\DatabaseUtility;
 use In2code\In2glossar\Utility\EnvironmentUtility;
+use LogicException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -20,12 +27,10 @@ class ContentPostProcessor implements SingletonInterface
      * @var TypoScriptFrontendController
      */
     protected $tsfe = null;
-
     /**
      * @var string
      */
     protected $excludeClassGeneral = 'in2glossar-excluded';
-
     /**
      * Check that this script was not already rendered before
      *
@@ -51,7 +56,7 @@ class ContentPostProcessor implements SingletonInterface
                     $body = $this->replaceEscaptedTags($body);
                     $this->setBody($body);
                     $this->done = true;
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     // todo write to log
                 }
             }
@@ -64,14 +69,14 @@ class ContentPostProcessor implements SingletonInterface
      */
     protected function replaceInTags(string $body): string
     {
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         @$dom->loadHTML(
             $this->wrapHtmlWithMainTags($body),
-            LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+            LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
         );
         foreach ($this->getReplacements() as $set) {
-            foreach ((array)$set['searches'] as $search) {
-                $this->domTextReplace($search, $set['label'], $set['title'], (int)$set['uid'], $dom);
+            foreach ((array) $set['searches'] as $search) {
+                $this->domTextReplace($search, $set['label'], $set['title'], (int) $set['uid'], $dom);
             }
         }
         return $this->stripMainTagsFromHtml($dom->saveHTML());
@@ -114,10 +119,10 @@ class ContentPostProcessor implements SingletonInterface
         foreach ($results as $result) {
             $searches = array_merge([$result['word']], GeneralUtility::trimExplode(',', $result['synonyms'], true));
             $replacements[] = [
-                'uid' => (int)$result['uid'],
+                'uid' => (int) $result['uid'],
                 'title' => $result['word'],
                 'searches' => $searches,
-                'label' => $result['short_description']
+                'label' => $result['short_description'],
             ];
         }
         return $replacements;
@@ -141,10 +146,10 @@ class ContentPostProcessor implements SingletonInterface
      * @param string $label
      * @param string $title
      * @param int $uid
-     * @param \DOMNode $domNode
+     * @param DOMNode $domNode
      * @return void
      */
-    protected function domTextReplace(string $search, string $label, string $title, int $uid, \DOMNode $domNode)
+    protected function domTextReplace(string $search, string $label, string $title, int $uid, DOMNode $domNode)
     {
         if ($domNode->hasChildNodes()) {
             if ($this->isAllowedByGeneralClassName($domNode)) {
@@ -152,14 +157,14 @@ class ContentPostProcessor implements SingletonInterface
                 foreach ($domNode->childNodes as $child) {
                     $children[] = $child;
                 }
-                /** @var \DOMText $child */
+                /** @var DOMText $child */
                 foreach ($children as $child) {
                     if ($child->nodeType === XML_TEXT_NODE && $this->isDomElementIncluded($child)) {
                         if (stristr($child->wholeText, $search)) {
                             $newText = preg_replace(
                                 '~\b(' . $search . ')\b~Ui',
                                 $this->wrapReplace($label, $title, $uid),
-                                $child->wholeText
+                                $child->wholeText,
                             );
                             $newTextNode = $domNode->ownerDocument->createTextNode($newText);
                             $domNode->replaceChild($newTextNode, $child);
@@ -190,13 +195,13 @@ class ContentPostProcessor implements SingletonInterface
      * - Is not in excluded tags
      * - Is not in excluded classes
      *
-     * @param \DOMNode $element XML text node
+     * @param DOMNode $element XML text node
      * @return bool
      */
-    protected function isDomElementIncluded(\DOMNode $element): bool
+    protected function isDomElementIncluded(DOMNode $element): bool
     {
         $parent = $element->parentNode;
-        if (is_a($parent, \DOMElement::class)) {
+        if (is_a($parent, DOMElement::class)) {
             if (in_array($parent->tagName, EnvironmentUtility::getExcludedTagNames()) === true) {
                 return false;
             }
@@ -219,7 +224,7 @@ class ContentPostProcessor implements SingletonInterface
         $this->tsfe->content = preg_replace(
             '/(<body[^>]*>)(.*)(<\/body>)/Uims',
             '$1' . $body . '$3',
-            $this->tsfe->content
+            $this->tsfe->content,
         );
     }
 
@@ -232,16 +237,16 @@ class ContentPostProcessor implements SingletonInterface
         if (!empty($result[1])) {
             return $result[1];
         }
-        throw new \LogicException('No body tag found', 1612449248);
+        throw new LogicException('No body tag found', 1612449248);
     }
 
     /**
      * Check if any parent element owns excludeClassGeneral
      *
-     * @param \DOMNode $node
+     * @param DOMNode $node
      * @return bool
      */
-    protected function isAllowedByGeneralClassName(\DOMNode $node): bool
+    protected function isAllowedByGeneralClassName(DOMNode $node): bool
     {
         if (method_exists($node, 'hasAttribute')) {
             if ($node->hasAttribute('class')
@@ -296,11 +301,11 @@ class ContentPostProcessor implements SingletonInterface
         $settings = EnvironmentUtility::getTyposcriptFrontendController()
             ->tmpl->setup['plugin.']['tx_in2glossar.']['settings.'];
         if (empty($settings['targetPage'])) {
-            throw new \LogicException('No target page defined in TypoScript', 1612530083);
+            throw new LogicException('No target page defined in TypoScript', 1612530083);
         }
         $configuration = [
-            'parameter' => (int)$settings['targetPage'],
-            'section' => 'in2glossar-definition-' . $uid
+            'parameter' => (int) $settings['targetPage'],
+            'section' => 'in2glossar-definition-' . $uid,
         ];
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
