@@ -33,8 +33,6 @@ call_user_func(
         /**
          * Add tooltips to rendered frontend
          */
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][]
-            = \In2code\In2glossar\Hooks\ContentPostProcessor::class . '->render';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][]
             = \In2code\In2glossar\Hooks\ContentPostProcessor::class . '->render';
     }
