@@ -21,8 +21,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class ContentPostProcessor implements SingletonInterface
 {
+    protected const EXCLUDED_CLASS = 'in2glossar-excluded';
     protected ?TypoScriptFrontendController $tsfe = null;
-    protected string $excludeClassGeneral = 'in2glossar-excluded';
     /**
      * Check that this script was not already rendered before
      */
@@ -210,7 +210,7 @@ class ContentPostProcessor implements SingletonInterface
     {
         if (method_exists($node, 'hasAttribute')) {
             if ($node->hasAttribute('class')
-                && stristr($node->getAttribute('class'), $this->excludeClassGeneral) !== false) {
+                && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false) {
                 return false;
             }
         }
