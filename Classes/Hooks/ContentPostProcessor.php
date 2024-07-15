@@ -13,6 +13,7 @@ use In2code\In2glossar\Domain\Model\Definition;
 use In2code\In2glossar\Utility\DatabaseUtility;
 use In2code\In2glossar\Utility\EnvironmentUtility;
 use LogicException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -26,6 +27,15 @@ class ContentPostProcessor implements SingletonInterface
      * Check that this script was not already rendered before
      */
     protected bool $done = false;
+    protected array $excludedTagNames;
+    protected array $excludedClassNames;
+
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
+    {
+        $config = $extensionConfiguration->get('in2glossar');
+        $this->excludedTagNames = GeneralUtility::trimExplode(',', (string) $config['excludedTagNames'], true);
+        $this->excludedClassNames = GeneralUtility::trimExplode(',', (string) $config['excludedClassNames'], true);
+    }
 
     public function render(array $reference, TypoScriptFrontendController $tsfe): void
     {
@@ -162,10 +172,10 @@ class ContentPostProcessor implements SingletonInterface
     {
         $parent = $element->parentNode;
         if (is_a($parent, DOMElement::class)) {
-            if (in_array($parent->tagName, EnvironmentUtility::getExcludedTagNames()) === true) {
+            if (in_array($parent->tagName, $this->excludedTagNames) === true) {
                 return false;
             }
-            foreach (EnvironmentUtility::getExcludedClassNames() as $className) {
+            foreach ($this->excludedClassNames as $className) {
                 if ($parent->hasAttribute($className)) {
                     return false;
                 }
