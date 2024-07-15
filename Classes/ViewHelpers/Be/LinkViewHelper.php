@@ -8,9 +8,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
-/**
- * LinkViewHelper
- */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {
     /**
@@ -18,21 +15,13 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $settings = $this->templateVariableContainer->get('settings');
         $id = $settings['storagePid'];
@@ -59,10 +48,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    /**
-     * @return string
-     */
-    public function buildReturnUrl()
+    public function buildReturnUrl(): string
     {
         return $this->renderingContext->getControllerContext()->getUriBuilder()->reset()->build();
     }

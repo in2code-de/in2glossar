@@ -18,31 +18,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * Class ContentPostProcessor
- */
 class ContentPostProcessor implements SingletonInterface
 {
-    /**
-     * @var TypoScriptFrontendController
-     */
-    protected $tsfe = null;
-    /**
-     * @var string
-     */
-    protected $excludeClassGeneral = 'in2glossar-excluded';
+    protected ?TypoScriptFrontendController $tsfe = null;
+    protected string $excludeClassGeneral = 'in2glossar-excluded';
     /**
      * Check that this script was not already rendered before
-     *
-     * @var bool
      */
-    protected $done = false;
+    protected bool $done = false;
 
-    /**
-     * @param array $reference
-     * @param TypoScriptFrontendController $tsfe
-     * @return void
-     */
     public function render(array $reference, TypoScriptFrontendController $tsfe): void
     {
         unset($reference);
@@ -63,10 +47,6 @@ class ContentPostProcessor implements SingletonInterface
         }
     }
 
-    /**
-     * @param string $body
-     * @return string
-     */
     protected function replaceInTags(string $body): string
     {
         $dom = new DOMDocument();
@@ -104,7 +84,7 @@ class ContentPostProcessor implements SingletonInterface
      *      'label' => 'Here is the explanation'
      *  ]
      *
-     * @return string[]
+     * @return array<array{'uid': int, 'title': string, 'searches': array<string>, 'label': string}>
      */
     protected function getReplacements(): array
     {
@@ -130,9 +110,6 @@ class ContentPostProcessor implements SingletonInterface
 
     /**
      * Change "[abbr]" to "<abbr>" + "[span]" to "<span>"
-     *
-     * @param string $body
-     * @return string
      */
     protected function replaceEscaptedTags(string $body): string
     {
@@ -141,15 +118,7 @@ class ContentPostProcessor implements SingletonInterface
         return $body;
     }
 
-    /**
-     * @param string $search
-     * @param string $label
-     * @param string $title
-     * @param int $uid
-     * @param DOMNode $domNode
-     * @return void
-     */
-    protected function domTextReplace(string $search, string $label, string $title, int $uid, DOMNode $domNode)
+    protected function domTextReplace(string $search, string $label, string $title, int $uid, DOMNode $domNode): void
     {
         if ($domNode->hasChildNodes()) {
             if ($this->isAllowedByGeneralClassName($domNode)) {
@@ -177,12 +146,6 @@ class ContentPostProcessor implements SingletonInterface
         }
     }
 
-    /**
-     * @param string $replace
-     * @param string $title
-     * @param int $uid
-     * @return string
-     */
     protected function wrapReplace(string $replace, string $title, int $uid): string
     {
         return '[abbr class="in2glossar-abbr" data-in2glossar-title="' . $title
@@ -194,9 +157,6 @@ class ContentPostProcessor implements SingletonInterface
      * Check if dom element is allowed:
      * - Is not in excluded tags
      * - Is not in excluded classes
-     *
-     * @param DOMNode $element XML text node
-     * @return bool
      */
     protected function isDomElementIncluded(DOMNode $element): bool
     {
@@ -215,10 +175,6 @@ class ContentPostProcessor implements SingletonInterface
         return false;
     }
 
-    /**
-     * @param string $body
-     * @return void
-     */
     protected function setBody(string $body): void
     {
         $this->tsfe->content = preg_replace(
@@ -228,9 +184,6 @@ class ContentPostProcessor implements SingletonInterface
         );
     }
 
-    /**
-     * @return string
-     */
     protected function getBody(): string
     {
         preg_match('~<body[^>]*>(.*)<\/body>~Uims', $this->tsfe->content, $result);
@@ -242,9 +195,6 @@ class ContentPostProcessor implements SingletonInterface
 
     /**
      * Check if any parent element owns excludeClassGeneral
-     *
-     * @param DOMNode $node
-     * @return bool
      */
     protected function isAllowedByGeneralClassName(DOMNode $node): bool
     {
@@ -257,9 +207,6 @@ class ContentPostProcessor implements SingletonInterface
         return true;
     }
 
-    /**
-     * @return bool
-     */
     protected function isDefaultTypeNum(): bool
     {
         return EnvironmentUtility::isDefaultTypeNum();
@@ -271,9 +218,6 @@ class ContentPostProcessor implements SingletonInterface
      *  This is a workarround for HTML parsing and wrting with \DOMDocument()
      *      - The html and body tag are preventing strange p-tags while using LIBXML_HTML_NOIMPLIED
      *      - The doctype declaration allows us the usage of umlauts and special characters
-     *
-     * @param string $html
-     * @return string
      */
     protected function wrapHtmlWithMainTags(string $html): string
     {
@@ -283,19 +227,12 @@ class ContentPostProcessor implements SingletonInterface
     /**
      * Remove tags <?xml encoding="utf-8" ?><html><body></body></html>
      * This function is normally used after wrapHtmlWithMainTags
-     *
-     * @param string $html
-     * @return string
      */
     protected function stripMainTagsFromHtml(string $html): string
     {
         return str_replace(['<html>', '</html>', '<body>', '</body>', '<?xml encoding="utf-8" ?>'], '', $html);
     }
 
-    /**
-     * @param int $uid tx_in2glossar_domain_model_definition.uid
-     * @return string
-     */
     protected function getTarget(int $uid): string
     {
         $settings = EnvironmentUtility::getTyposcriptFrontendController()

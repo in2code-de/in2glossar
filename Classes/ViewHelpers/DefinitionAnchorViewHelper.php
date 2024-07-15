@@ -7,24 +7,15 @@ namespace In2code\In2glossar\ViewHelpers;
 use In2code\In2glossar\Domain\Model\Definition;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * IndexViewHelper
- */
 class DefinitionAnchorViewHelper extends AbstractViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('definition', Definition::class, 'The definition object');
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $definition = $this->arguments['definition'];
         if ($definition === null) {

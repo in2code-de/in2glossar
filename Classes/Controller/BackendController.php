@@ -11,25 +11,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-/**
- * Class BackendController
- */
 class BackendController extends ActionController
 {
-    /**
-     * @return void
-     */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         if ($this->isStoragePidGiven() === false) {
             $this->addFlashMessage('Storage Pid is not set', '', AbstractMessage::ERROR);
         }
     }
 
-    /**
-     * @return void
-     */
-    public function indexAction() {}
+    public function indexAction(): void {}
 
     /**
      * @param string $messageBody
@@ -42,7 +33,7 @@ class BackendController extends ActionController
         $messageTitle = '',
         $severity = AbstractMessage::OK,
         $storeInSession = true
-    ) {
+    ): void {
         /** @var FlashMessage $message */
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
@@ -59,9 +50,6 @@ class BackendController extends ActionController
         $messageQueue->addMessage($message);
     }
 
-    /**
-     * @return bool
-     */
     protected function isStoragePidGiven(): bool
     {
         return MathUtility::canBeInterpretedAsInteger($this->settings['storagePid'])

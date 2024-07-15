@@ -8,24 +8,15 @@ use Closure;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * ContentElementClassViewHelper
- */
 class ContentElementClassViewHelper extends AbstractViewHelper
 {
-    /**
-     *
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('data', 'array', 'The data array of the content element', true);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         return self::renderStatic(
             $this->arguments,
@@ -34,17 +25,11 @@ class ContentElementClassViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @param Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
     public static function renderStatic(
         array $arguments,
         Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $data = $arguments['data'];
         if ($data === null) {
             $data = $renderChildrenClosure();

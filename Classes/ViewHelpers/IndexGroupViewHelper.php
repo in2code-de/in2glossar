@@ -7,24 +7,18 @@ namespace In2code\In2glossar\ViewHelpers;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * IndexGroupViewHelper
- */
 class IndexGroupViewHelper extends AbstractViewHelper
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeChildren = false;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('definitionGroups', 'array', 'The iteratable object containing defintion groups', true);
@@ -39,10 +33,7 @@ class IndexGroupViewHelper extends AbstractViewHelper
         $this->registerArgument('as', 'string', '', true);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $groups = $this->groupDefinitions();
         $this->templateVariableContainer->add($this->arguments['as'], $groups);
@@ -51,10 +42,7 @@ class IndexGroupViewHelper extends AbstractViewHelper
         return $output;
     }
 
-    /**
-     * @return array
-     */
-    protected function groupDefinitions()
+    protected function groupDefinitions(): array
     {
         $group = [];
         $definitionGroups = $this->arguments['definitionGroups'];

@@ -7,38 +7,26 @@ namespace In2code\In2glossar\ViewHelpers;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * IndexViewHelper
- */
 class IndexViewHelper extends AbstractViewHelper
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeChildren = false;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
-    /**
-     * @var array
-     */
-    protected $index = [];
+    protected array $index = [];
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('collection', 'array', 'The iteratable object containing defintions', true);
         $this->registerArgument('as', 'string', '', true);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $this->buildIndex($this->arguments['collection']);
         $this->templateVariableContainer->add($this->arguments['as'], $this->index);
@@ -47,10 +35,7 @@ class IndexViewHelper extends AbstractViewHelper
         return $output;
     }
 
-    /**
-     * @param array $collection
-     */
-    protected function buildIndex($collection)
+    protected function buildIndex(iterable $collection): void
     {
         foreach (range('a', 'z') as $char) {
             $this->index[$char] = [];

@@ -8,47 +8,31 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * Class EnvironmentUtility
- */
 class EnvironmentUtility
 {
-    /**
-     * @return array
-     */
     public static function getExcludedTagNames(): array
     {
         $configuration = self::getExtensionConfiguration();
         return GeneralUtility::trimExplode(',', (string) $configuration['excludedTagNames'], true);
     }
 
-    /**
-     * @return array
-     */
     public static function getExcludedClassNames(): array
     {
         $configuration = self::getExtensionConfiguration();
         return GeneralUtility::trimExplode(',', (string) $configuration['excludedClassNames'], true);
     }
 
-    /**
-     * @return int
-     */
     public static function getTypeNum(): int
     {
         return (int) self::getTyposcriptFrontendController()->type;
     }
 
-    /**
-     * @return bool
-     */
     public static function isDefaultTypeNum(): bool
     {
         return self::getTypeNum() === 0;
     }
 
     /**
-     * @return TypoScriptFrontendController
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public static function getTyposcriptFrontendController(): ?TypoScriptFrontendController
@@ -58,8 +42,6 @@ class EnvironmentUtility
 
     /**
      * Get extension configuration from LocalConfiguration.php
-     *
-     * @return array
      */
     protected static function getExtensionConfiguration(): array
     {
@@ -69,7 +51,6 @@ class EnvironmentUtility
     /**
      * Get extension configuration from LocalConfiguration.php
      *
-     * @return array
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     protected static function getTypo3ConfigurationVariables(): array
