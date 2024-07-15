@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 return [
     'ctrl' => [
-        'title' =>
-            'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition',
+        'title' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition',
         'label' => 'word',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -70,8 +69,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_in2glossar_domain_model_definition',
-                'foreign_table_where' => 'AND tx_in2glossar_domain_model_definition.pid=###CURRENT_PID### ' .
-                    'AND tx_in2glossar_domain_model_definition.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND tx_in2glossar_domain_model_definition.pid=###CURRENT_PID### AND tx_in2glossar_domain_model_definition.sys_language_uid IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -122,16 +120,14 @@ return [
         'tooltip' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.tooltip',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.tooltip',
             'config' => [
                 'type' => 'check',
             ],
         ],
         'word' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.word',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.word',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -141,8 +137,7 @@ return [
         ],
         'synonyms' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.synonyms',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.synonyms',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
@@ -152,8 +147,7 @@ return [
         ],
         'short_description' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.short_description',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.short_description',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
@@ -163,8 +157,7 @@ return [
         ],
         'description' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:' .
-                'tx_in2glossar_domain_model_definition.description',
+            'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
