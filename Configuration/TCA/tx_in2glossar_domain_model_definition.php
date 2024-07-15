@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'ctrl' => [
         'title' =>
@@ -26,10 +28,20 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' =>
-                'sys_language_uid,l10n_parent,l10n_diffsource,hidden,tooltip,word,synonyms,short_description,' .
-                'description,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,' .
-                'starttime,endtime'
+            'showitem' => '
+                    sys_language_uid,
+                    l10n_parent,
+                    l10n_diffsource,
+                    hidden,
+                    tooltip,
+                    word,
+                    synonyms,
+                    short_description,
+                    description,
+                --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+                    starttime,
+                    endtime
+                ',
         ],
     ],
     'palettes' => [],
@@ -86,7 +98,7 @@ return [
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y')),
                 ],
                 'renderType' => 'inputDateTime',
             ],
@@ -102,7 +114,7 @@ return [
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y')),
                 ],
                 'renderType' => 'inputDateTime',
             ],
