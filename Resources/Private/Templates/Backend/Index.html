@@ -1,21 +1,22 @@
-<f:layout name="Backend" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:glossar="http://typo3.org/ns/In2code/In2glossar/ViewHelpers"
+	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+	  data-namespace-typo3-fluid="true"
+>
+	<f:layout name="Backend" />
 
-{namespace glossar=In2code\In2glossar\ViewHelpers}
-{namespace core=TYPO3\CMS\Core\ViewHelpers}
+	<f:section name="buttons">
+		<glossar:be.link class="btn btn-default btn-sm">
+			<core:icon identifier="actions-document-new" />
+		</glossar:be.link>
+	</f:section>
 
-
-<f:section name="buttons">
-	<glossar:be.link class="btn btn-default btn-sm">
-		<core:icon identifier="actions-document-new" />
-	</glossar:be.link>
-</f:section>
-
-
-<f:section name="content">
-	<f:be.tableList
-			tableName="tx_in2glossar_domain_model_definition"
-			fieldList="{0:'word',1:'short_description'}"
-			sortField="word"
-			clickTitleMode="edit"
-			enableClickMenu="true" />
-</f:section>
+	<f:section name="content">
+		<f:be.tableList
+				tableName="tx_in2glossar_domain_model_definition"
+				fieldList="{0:'word',1:'short_description'}"
+				sortField="word"
+				clickTitleMode="edit"
+				enableClickMenu="true" />
+	</f:section>
+</html>
