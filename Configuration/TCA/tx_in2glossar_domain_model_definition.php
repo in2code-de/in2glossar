@@ -9,7 +9,7 @@ return [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'sortby' => 'word',
+        'default_sortby' => 'word',
         'dividers2tabs' => true,
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
