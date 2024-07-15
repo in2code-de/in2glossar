@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace In2code\In2glossar\Controller;
 
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Utility\MathUtility;
