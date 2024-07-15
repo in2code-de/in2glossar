@@ -5,7 +5,7 @@ declare(strict_types=1);
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-defined('TYPO3_MODE') || die();
+defined('TYPO3') or die();
 
 ExtensionManagementUtility::addTCAcolumns(
     'tt_content',

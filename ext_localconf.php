@@ -7,16 +7,12 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die();
 
 /**
  * Register Icons
  */
-$iconRegistry = GeneralUtility::makeInstance(
-    IconRegistry::class,
-);
+$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 $iconRegistry->registerIcon(
     'extension-in2glossar-definition',
     SvgIconProvider::class,

@@ -3,9 +3,7 @@
 use In2code\In2glossar\Controller\BackendController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die();
 
 ExtensionUtility::registerModule(
     'In2glossar',
