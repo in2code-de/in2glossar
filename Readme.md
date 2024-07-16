@@ -15,6 +15,7 @@ records.
 
 | Version | Date       | State   | Description                                      |
 |---------|------------|---------|--------------------------------------------------|
+| 4.0.0   | 2024-07-16 | Feature | TYPO3 v12 compatibility                          |
 | 3.0.0   | 2024-07-16 | Feature | TYPO3 v11 compatibility and modern markup option |
 | 2.0.2   | 2021-11-18 | Bugfix  | Sort by word in backend list module              |
 | 2.0.1   | 2021-10-01 | Bugfix  | Fix exception in backend module                  |

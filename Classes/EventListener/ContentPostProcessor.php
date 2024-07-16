@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace In2code\In2glossar\Hooks;
+namespace In2code\In2glossar\EventListener;
 
 use DOMDocument;
 use DOMElement;
@@ -10,14 +10,28 @@ use DOMNode;
 use DOMText;
 use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
-use In2code\In2glossar\Utility\DatabaseUtility;
-use In2code\In2glossar\Utility\EnvironmentUtility;
 use LogicException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
+
+use function array_merge;
+use function in_array;
+use function is_a;
+use function method_exists;
+use function preg_match;
+use function preg_replace;
+use function sprintf;
+use function str_replace;
+use function stristr;
+
+use const LIBXML_HTML_NODEFDTD;
+use const LIBXML_HTML_NOIMPLIED;
+use const XML_TEXT_NODE;
 
 class ContentPostProcessor implements SingletonInterface
 {
@@ -26,7 +40,6 @@ class ContentPostProcessor implements SingletonInterface
     /**
      * Check that this script was not already rendered before
      */
-    protected bool $done = false;
     protected array $excludedTagNames;
     protected array $excludedClassNames;
     protected bool $modernMarkup;
@@ -39,23 +52,19 @@ class ContentPostProcessor implements SingletonInterface
         $this->modernMarkup = (bool) $config['modernMarkup'];
     }
 
-    public function render(array $reference, TypoScriptFrontendController $tsfe): void
+    public function render(AfterCacheableContentIsGeneratedEvent $event): void
     {
-        unset($reference);
-        if ($this->done === false) {
-            $this->tsfe = $tsfe;
-
-            if ($this->isDefaultTypeNum()) {
-                try {
-                    $body = $this->getBody();
-                    $body = $this->replaceInTags($body);
-                    $body = $this->replaceEscaptedTags($body);
-                    $this->setBody($body);
-                    $this->done = true;
-                } catch (Exception $exception) {
-                    // todo write to log
-                }
-            }
+        $this->tsfe = $event->getController();
+        if (0 !== (int) $this->tsfe->getPageArguments()->getPageType()) {
+            return;
+        }
+        try {
+            $body = $this->getBody();
+            $body = $this->replaceInTags($body);
+            $body = $this->replaceEscaptedTags($body);
+            $this->setBody($body);
+        } catch (Exception $exception) {
+            // todo write to log
         }
     }
 
@@ -100,13 +109,14 @@ class ContentPostProcessor implements SingletonInterface
      */
     protected function getReplacements(): array
     {
-        $queryBuilder = DatabaseUtility::getQueryBuilderForTable(Definition::TABLE_NAME);
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable(Definition::TABLE_NAME);
         $results = $queryBuilder
             ->select('uid', 'word', 'synonyms', 'short_description')
             ->from(Definition::TABLE_NAME)
             ->where('tooltip', 1)
-            ->execute()
-            ->fetchAll();
+            ->executeQuery()
+            ->fetchAllAssociative();
         $replacements = [];
         foreach ($results as $result) {
             $searches = array_merge([$result['word']], GeneralUtility::trimExplode(',', $result['synonyms'], true));
@@ -164,14 +174,14 @@ class ContentPostProcessor implements SingletonInterface
             return sprintf(
                 '[abbr title="%s" class="in2glossar-abbr" data-in2glossar-url="%s"]$1[/abbr]',
                 $replace,
-                $this->getTarget($uid)
+                $this->getTarget($uid),
             );
         }
         return sprintf(
             '[abbr class="in2glossar-abbr" data-in2glossar-title="%s" data-in2glossar-url="%s"]$1[span]%s[/span][/abbr]',
             $title,
             $this->getTarget($uid),
-            $replace
+            $replace,
         );
     }
 
@@ -229,11 +239,6 @@ class ContentPostProcessor implements SingletonInterface
         return true;
     }
 
-    protected function isDefaultTypeNum(): bool
-    {
-        return EnvironmentUtility::isDefaultTypeNum();
-    }
-
     /**
      * Wrap html with "<?xml encoding="utf-8" ?><html><body>|</body></html>"
      *
@@ -257,8 +262,7 @@ class ContentPostProcessor implements SingletonInterface
 
     protected function getTarget(int $uid): string
     {
-        $settings = EnvironmentUtility::getTyposcriptFrontendController()
-            ->tmpl->setup['plugin.']['tx_in2glossar.']['settings.'];
+        $settings = $this->tsfe->tmpl->setup['plugin.']['tx_in2glossar.']['settings.'];
         if (empty($settings['targetPage'])) {
             throw new LogicException('No target page defined in TypoScript', 1612530083);
         }

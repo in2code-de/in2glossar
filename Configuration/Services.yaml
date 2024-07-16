@@ -7,3 +7,10 @@ services:
   In2code\In2glossar\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+
+  In2code\In2glossar\EventListener\ContentPostProcessor:
+    tags:
+      - name: event.listener
+        identifier: 'in2code/in2glossar/tooltip'
+        event: TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent
+        method: render

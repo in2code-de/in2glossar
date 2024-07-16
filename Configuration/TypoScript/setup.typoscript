@@ -18,16 +18,9 @@ plugin.tx_in2glossar {
 		}
 	}
 }
-module.tx_in2glossar < plugin.tx_in2glossar
 
 # Add css for tooltip functions (if needed)
 # page.includeCSS.tx_in2glossar = EXT:in2glossar/Resources/Public/Css/in2glossar.css
 
-tt_content.stdWrap.innerWrap.cObject.default.20 {
-	1469530480 = TEXT
-	1469530480 {
-		value = in2glossar-excluded
-		noTrimWrap = || |
-		if.isTrue.field = tx_in2glossar_exclude
-	}
-}
+tt_content.stdWrap.wrap = <div class="in2glossar-excluded">|</div>
+tt_content.stdWrap.wrap.if.isTrue.field = tx_in2glossar_exclude
