@@ -11,13 +11,12 @@ ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
     [
         'tx_in2glossar_exclude' => [
-            'exclude' => 1,
             'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tt_content.tx_in2glossar_exclude',
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    '1' => [
-                        'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tt_content.tx_in2glossar_exclude.I.0',
+                    [
+                        'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tt_content.tx_in2glossar_exclude.I.0',
                     ],
                 ],
             ],
