@@ -1,118 +1,66 @@
 <?php
+
 declare(strict_types=1);
 
 namespace In2code\In2glossar\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Class Definition
- */
 class Definition extends AbstractEntity
 {
     const TABLE_NAME = 'tx_in2glossar_domain_model_definition';
+    protected bool $tooltip = false;
+    protected string $word = '';
+    protected string $synonyms = '';
+    protected string $shortDescription = '';
+    protected string $description = '';
 
-    /**
-     * @var bool
-     */
-    protected $tooltip;
-
-    /**
-     * @var string
-     */
-    protected $word;
-
-    /**
-     * @var string
-     */
-    protected $synonyms;
-
-    /**
-     * @var string
-     */
-    protected $shortDescription;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @return boolean
-     */
-    public function getTooltip()
+    public function getTooltip(): bool
     {
         return $this->tooltip;
     }
 
-    /**
-     * @param boolean $tooltip
-     */
-    public function setTooltip($tooltip)
+    public function setTooltip(bool $tooltip): void
     {
         $this->tooltip = $tooltip;
     }
 
-    /**
-     * @return string
-     */
-    public function getWord()
+    public function getWord(): string
     {
         return $this->word;
     }
 
-    /**
-     * @param string $word
-     */
-    public function setWord($word)
+    public function setWord(string $word): void
     {
         $this->word = $word;
     }
 
-    /**
-     * @return string
-     */
-    public function getSynonyms()
+    public function getSynonyms(): string
     {
         return $this->synonyms;
     }
 
-    /**
-     * @param string $synonyms
-     */
-    public function setSynonyms($synonyms)
+    public function setSynonyms(string $synonyms): void
     {
         $this->synonyms = $synonyms;
     }
 
-    /**
-     * @return string
-     */
-    public function getShortDescription()
+    public function getShortDescription(): string
     {
         return $this->shortDescription;
     }
 
-    /**
-     * @param string $shortDescription
-     */
-    public function setShortDescription($shortDescription)
+    public function setShortDescription(string $shortDescription): void
     {
         $this->shortDescription = $shortDescription;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }

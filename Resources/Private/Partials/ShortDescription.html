@@ -1,10 +1,14 @@
-{namespace glossar=In2code\In2glossar\ViewHelpers}
-<h3>{definition.word}</h3>
-<p>{definition.shortDescription}</p>
-<f:if condition="{settings.targetPage}">
-	<p>
-		<f:link.action action="list" pluginName="Main" pageUid="{settings.targetPage}" arguments="{definition:definition}" section="{definition->glossar:definitionAnchor()}">
-			<f:translate key="label.more">More informations</f:translate>
-		</f:link.action>
-	</p>
-</f:if>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:glossar="http://typo3.org/ns/In2code/In2glossar/ViewHelpers"
+	  data-namespace-typo3-fluid="true"
+>
+	<h3>{definition.word}</h3>
+	<p>{definition.shortDescription}</p>
+	<f:if condition="{settings.targetPage}">
+		<p>
+			<f:link.action action="list" pluginName="Main" pageUid="{settings.targetPage}" arguments="{definition:definition}" section="{definition->glossar:definitionAnchor()}">
+				<f:translate key="label.more">More information</f:translate>
+			</f:link.action>
+		</p>
+	</f:if>
+</html>

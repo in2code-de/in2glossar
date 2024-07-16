@@ -1,52 +1,96 @@
-<f:layout name="default" />
-{namespace glossar=In2code\In2glossar\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:glossar="http://typo3.org/ns/In2code/In2glossar/ViewHelpers"
+	  data-namespace-typo3-fluid="true"
+>
+	<f:layout name="default" />
 
-<f:section name="index-item">
-	<f:if condition="{groupItems}">
-		<f:then>
-			<li><a href="#glossary__item--{groupName}">{groupName->f:format.case()}</a></li>
-		</f:then>
-		<f:else>
-			<li>{groupName->f:format.case()}</li>
-		</f:else>
-	</f:if>
-</f:section>
+	<f:section name="modern-markup">
+		<f:render section="nav" arguments="{_all}" />
+		<ul class="glossary__list">
+			<f:for each="{groups}" key="groupName" as="groupItems">
+				<f:if condition="{groupItems}">
+					<li class="glossary__item" id="glossary__item--{groupName}">
+						<header class="glossary__header">{groupName->f:format.case()}
+							<a class="glossary__backtop" href="#glossary__search">Nach oben</a>
+						</header>
+						<ul>
+							<f:for each="{groupItems}" as="definition">
+								<li id="{definition->glossar:definitionAnchor()}" class="in2glossar-excluded">
+									<p>
+										<dfn id="html"><abbr title="{definition.shortDescription}">{definition.word}</abbr></dfn>
+										<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
+									</p>
+								</li>
+							</f:for>
+						</ul>
+					</li>
+				</f:if>
+			</f:for>
+		</ul>
+	</f:section>
 
-<f:section name="list-item">
-	<li id="{definition->glossar:definitionAnchor()}">
-		<h2>{definition.word}</h2>
-		<div class="in2glossar-excluded">
-			<p><f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html></p>
-		</div>
-	</li>
-</f:section>
+	<f:section name="legacy-markup">
+		<f:render section="nav" arguments="{_all}" />
+		<ul class="glossary__list">
+			<f:for each="{groups}" key="groupName" as="groupItems">
+				<f:if condition="{groupItems}">
+					<li class="glossary__item" id="glossary__item--{groupName}">
+						<header class="glossary__header">{groupName->f:format.case()}
+							<a class="glossary__backtop" href="#glossary__search">Nach oben</a>
+						</header>
+						<ul>
+							<f:for each="{groupItems}" as="definition">
+								<f:render section="list-item" arguments="{_all}" />
+							</f:for>
+						</ul>
+					</li>
+				</f:if>
+			</f:for>
+		</ul>
+	</f:section>
 
-<f:section name="main">
-	<glossar:index collection="{definitions}" as="index">
-		<glossar:indexGroup definitionGroups="{index}" as="groups">
-			<nav class="glossary__search" id="glossary__search">
-				<ul class="glossary__search-list">
-					<f:for each="{groups}" key="groupName" as="groupItems">
-						<f:render section="index-item" arguments="{_all}" />
-					</f:for>
-				</ul>
-			</nav>
-			<ul class="glossary__list">
+	<f:section name="nav">
+		<nav class="glossary__search" id="glossary__search">
+			<ul class="glossary__search-list">
 				<f:for each="{groups}" key="groupName" as="groupItems">
-					<f:if condition="{groupItems}">
-						<li class="glossary__item" id="glossary__item--{groupName}">
-							<header class="glossary__header">{groupName->f:format.case()}
-								<a class="glossary__backtop" href="#glossary__search">Nach oben</a>
-							</header>
-							<ul>
-								<f:for each="{groupItems}" as="definition">
-									<f:render section="list-item" arguments="{_all}" />
-								</f:for>
-							</ul>
-						</li>
-					</f:if>
+					<f:render section="index-item" arguments="{_all}" />
 				</f:for>
 			</ul>
-		</glossar:indexGroup>
-	</glossar:index>
-</f:section>
+		</nav>
+	</f:section>
+
+	<f:section name="index-item">
+		<f:if condition="{groupItems}">
+			<f:then>
+				<li><a href="#glossary__item--{groupName}">{groupName->f:format.case()}</a></li>
+			</f:then>
+			<f:else>
+				<li>{groupName->f:format.case()}</li>
+			</f:else>
+		</f:if>
+	</f:section>
+
+	<f:section name="list-item">
+		<li id="{definition->glossar:definitionAnchor()}">
+			<h2>{definition.word}</h2>
+			<div class="in2glossar-excluded">
+				<p><f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html></p>
+			</div>
+		</li>
+	</f:section>
+
+	<f:section name="main">
+		<glossar:index collection="{definitions}" as="index">
+			<glossar:indexGroup definitionGroups="{index}" as="groups">
+				<f:if condition="{extConf.modernMarkup}">
+					<f:then>
+						<f:render section="modern-markup" arguments="{_all}" />
+					</f:then>
+					<f:else>
+						<f:render section="legacy-markup" arguments="{_all}" />
+					</f:else>
+				</f:if>
+			</glossar:indexGroup>
+		</glossar:index>
+	</f:section>
+</html>

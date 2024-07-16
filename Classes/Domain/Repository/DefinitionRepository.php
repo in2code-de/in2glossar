@@ -1,17 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 namespace In2code\In2glossar\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-/**
- * Class DefinitionRepository
- */
 class DefinitionRepository extends Repository
 {
-    /**
-     * @return void
-     */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $querySettings = $this->createQuery()->getQuerySettings();
         $querySettings->setRespectStoragePage(false);

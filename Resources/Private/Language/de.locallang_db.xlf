@@ -37,10 +37,6 @@
 				<source>Deaktiviert</source>
 			</trans-unit>
 
-			<trans-unit id="in2glossar">
-				<source>in2glossar</source>
-				<target>in2glossar</target>
-			</trans-unit>
 			<trans-unit id="constants.category.javascript">
 				<source>Javascript configuration</source>
 				<target>Javascript Konfiguration</target>
@@ -52,10 +48,6 @@
 			<trans-unit id="constants.storagePid">
 				<source>Glossar StoragePid</source>
 				<target>Glossar Datensatzsammlung</target>
-			</trans-unit>
-			<trans-unit id="constants.excludeSelectors">
-				<source>Exclude Selectors</source>
-				<target>Ausgeschlossene Selektoren</target>
 			</trans-unit>
 		</body>
 	</file>
