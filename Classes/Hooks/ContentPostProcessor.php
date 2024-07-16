@@ -29,12 +29,14 @@ class ContentPostProcessor implements SingletonInterface
     protected bool $done = false;
     protected array $excludedTagNames;
     protected array $excludedClassNames;
+    protected bool $modernMarkup;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         $config = $extensionConfiguration->get('in2glossar');
         $this->excludedTagNames = GeneralUtility::trimExplode(',', (string) $config['excludedTagNames'], true);
         $this->excludedClassNames = GeneralUtility::trimExplode(',', (string) $config['excludedClassNames'], true);
+        $this->modernMarkup = (bool) $config['modernMarkup'];
     }
 
     public function render(array $reference, TypoScriptFrontendController $tsfe): void
@@ -158,9 +160,19 @@ class ContentPostProcessor implements SingletonInterface
 
     protected function wrapReplace(string $replace, string $title, int $uid): string
     {
-        return '[abbr class="in2glossar-abbr" data-in2glossar-title="' . $title
-            . '" data-in2glossar-url="' . $this->getTarget($uid) . '"]$1[span]'
-            . $replace . '[/span][/abbr]';
+        if ($this->modernMarkup) {
+            return sprintf(
+                '[abbr title="%s" class="in2glossar-abbr" data-in2glossar-url="%s"]$1[/abbr]',
+                $replace,
+                $this->getTarget($uid)
+            );
+        }
+        return sprintf(
+            '[abbr class="in2glossar-abbr" data-in2glossar-title="%s" data-in2glossar-url="%s"]$1[span]%s[/span][/abbr]',
+            $title,
+            $this->getTarget($uid),
+            $replace
+        );
     }
 
     /**

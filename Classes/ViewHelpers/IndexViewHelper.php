@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2glossar\ViewHelpers;
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use In2code\In2glossar\Domain\Model\Definition;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class IndexViewHelper extends AbstractViewHelper
@@ -17,33 +17,34 @@ class IndexViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeOutput = false;
-    protected array $index = [];
 
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('collection', 'array', 'The iteratable object containing defintions', true);
+        $this->registerArgument('collection', 'array', 'The iterable object containing definitions', true);
         $this->registerArgument('as', 'string', '', true);
     }
 
     public function render(): string
     {
-        $this->buildIndex($this->arguments['collection']);
-        $this->templateVariableContainer->add($this->arguments['as'], $this->index);
+        $index = $this->buildIndex($this->arguments['collection']);
+        $this->templateVariableContainer->add($this->arguments['as'], $index);
         $output = $this->renderChildren();
         $this->templateVariableContainer->remove($this->arguments['as']);
         return $output;
     }
 
-    protected function buildIndex(iterable $collection): void
+    protected function buildIndex(iterable $collection): array
     {
+        $index = [];
         foreach (range('a', 'z') as $char) {
-            $this->index[$char] = [];
+            $index[$char] = [];
         }
         foreach ($collection as $item) {
-            /* @var $item AbstractEntity */
-            $firstChar = strtolower(substr($item->_getProperty('word'), 0, 1));
-            $this->index[$firstChar][] = $item;
+            /* @var $item Definition */
+            $firstChar = strtolower(substr($item->getWord(), 0, 1));
+            $index[$firstChar][] = $item;
         }
+        return $index;
     }
 }
