@@ -35,9 +35,62 @@
             "In2code\\In2glossar\\": "Classes/"
         }
     },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
+        "allow-plugins": {
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true,
+            "phpstan/extension-installer": true
+        }
+    },
     "extra": {
         "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web",
             "extension-key": "in2glossar"
         }
+    },
+    "require-dev": {
+        "behat/behat": "^3.16",
+        "behat/mink-selenium2-driver": "^1.7",
+        "drevops/behat-screenshot": "^1.6",
+        "friends-of-behat/mink-browserkit-driver": "^1.6",
+        "friends-of-behat/mink-extension": "^2.7",
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "genesis/behat-fail-aid": "^3.7",
+        "helhum/typo3-console": "^8.2",
+        "helmich/typo3-typoscript-lint": "^3.2",
+        "michielroos/typo3scan": "^1.7",
+        "mikey179/vfsstream": "^1.6",
+        "phpmd/phpmd": "^2.15",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^1.12",
+        "saschaegerer/phpstan-typo3": "^1.10",
+        "se/selenium-server-standalone": "^3.141",
+        "ssch/typo3-rector": "^2.11",
+        "typo3/cms-adminpanel": "^12.4",
+        "typo3/cms-backend": "^12.4",
+        "typo3/cms-belog": "^12.4",
+        "typo3/cms-beuser": "^12.4",
+        "typo3/cms-dashboard": "^12.4",
+        "typo3/cms-extbase": "^12.4",
+        "typo3/cms-extensionmanager": "^12.4",
+        "typo3/cms-felogin": "^12.4",
+        "typo3/cms-filelist": "^12.4",
+        "typo3/cms-fluid": "^12.4",
+        "typo3/cms-fluid-styled-content": "^12.4",
+        "typo3/cms-frontend": "^12.4",
+        "typo3/cms-info": "^12.4",
+        "typo3/cms-install": "^12.4",
+        "typo3/cms-lowlevel": "^12.4",
+        "typo3/cms-recycler": "^12.4",
+        "typo3/cms-rte-ckeditor": "^12.4",
+        "typo3/cms-scheduler": "^12.4",
+        "typo3/cms-setup": "^12.4",
+        "typo3/cms-t3editor": "^12.4",
+        "typo3/cms-tstemplate": "^12.4",
+        "typo3/testing-framework": "^8.2"
     }
 }
