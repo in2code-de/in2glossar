@@ -133,6 +133,7 @@ return [
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 255,
+                'required' => true,
             ],
         ],
         'synonyms' => [
