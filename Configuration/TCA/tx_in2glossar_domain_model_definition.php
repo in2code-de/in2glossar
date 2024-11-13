@@ -83,6 +83,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
             ],
         ],
         'starttime' => [
@@ -123,6 +124,7 @@ return [
             'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.tooltip',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
             ],
         ],
         'word' => [
