@@ -1,6 +1,6 @@
 # in2glossar
 
-This is s glossary extension for TYPO3
+This is a glossary extension for TYPO3
 
 ![Tooltip](Documentation/Images/screenshot_tooltip.png "Tooltip")
 
