@@ -146,6 +146,7 @@ return [
                 'cols' => 30,
                 'rows' => 3,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'short_description' => [
@@ -156,6 +157,7 @@ return [
                 'cols' => 30,
                 'rows' => 3,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'description' => [
