@@ -8,7 +8,7 @@ This is a glossary extension for TYPO3
 
 ## Documentation
 
-This is an extension especially build for the needs of one customer to show tooltips and a list view with all glossary
+This is an extension especially built for the needs of one customer to show tooltips and a list view with all glossary
 records.
 
 ## Early Access Programm for TYPO3 13 support
@@ -33,7 +33,7 @@ records.
 
 ## Contribution
 
-Pull requests are welcome in general! Nevertheless please don't forget to add a description to your pull requests. This is very helpful to understand what kind of issue the PR is going to solve.
+Pull requests are welcome in general! Nevertheless, please don't forget to add a description to your pull requests. This is very helpful to understand what kind of issue the PR is going to solve.
 
 * Bugfixes: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're going to accept only bugfixes if I can reproduce the issue.
 * Features: Not every feature is relevant for the bulk of powermail users. In addition: We don't want to make powermail even more complicated in usability for an edge case feature. Please discuss a new feature before.
