@@ -1,8 +1,7 @@
 .DS_Store
 .idea
 nbproject
-/var/*
-!/var/labels
+var/
 /.Build/Web/*
 !/.Build/Web/.htaccess
 !/.Build/Web/typo3conf
