@@ -13,6 +13,7 @@ use In2code\In2glossar\Domain\Model\Definition;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -126,7 +127,7 @@ class ContentPostProcessor implements SingletonInterface
         $results = $queryBuilder
             ->select('uid', 'word', 'synonyms', 'short_description')
             ->from(Definition::TABLE_NAME)
-            ->where('tooltip', 1)
+            ->where($queryBuilder->expr()->eq('tooltip', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAllAssociative();
         $replacements = [];
