@@ -42,6 +42,8 @@ class ContentPostProcessor implements SingletonInterface
 
     protected ?TypoScriptFrontendController $tsfe = null;
 
+    protected ?ServerRequestInterface $request = null;
+
     /**
      * Check that this script was not already rendered before
      */
@@ -280,7 +282,7 @@ class ContentPostProcessor implements SingletonInterface
 
     protected function getTarget(int $uid): string
     {
-        $settings = $this->tsfe->tmpl->setup['plugin.']['tx_in2glossar.']['settings.'];
+        $settings = $this->request->getAttribute('frontend.typoscript')->getSetupArray()['plugin.']['tx_in2glossar.']['settings.'];
         if (empty($settings['targetPage'])) {
             throw new LogicException('No target page defined in TypoScript', 1612530083);
         }
