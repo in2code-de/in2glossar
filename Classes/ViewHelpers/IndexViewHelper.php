@@ -13,6 +13,7 @@ class IndexViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeChildren = false;
+
     /**
      * @var bool
      */
@@ -40,11 +41,13 @@ class IndexViewHelper extends AbstractViewHelper
         foreach (range('a', 'z') as $char) {
             $index[$char] = [];
         }
+
         foreach ($collection as $item) {
             /* @var $item Definition */
             $firstChar = strtolower(substr($item->word, 0, 1));
             $index[$firstChar][] = $item;
         }
+
         return $index;
     }
 }

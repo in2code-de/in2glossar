@@ -36,12 +36,16 @@ use const XML_TEXT_NODE;
 class ContentPostProcessor implements SingletonInterface
 {
     protected const EXCLUDED_CLASS = 'in2glossar-excluded';
+
     protected ?TypoScriptFrontendController $tsfe = null;
+
     /**
      * Check that this script was not already rendered before
      */
     protected array $excludedTagNames;
+
     protected array $excludedClassNames;
+
     protected bool $modernMarkup;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
@@ -58,12 +62,13 @@ class ContentPostProcessor implements SingletonInterface
         if (0 !== (int) $this->tsfe->getPageArguments()->getPageType()) {
             return;
         }
+
         try {
             $body = $this->getBody();
             $body = $this->replaceInTags($body);
             $body = $this->replaceEscaptedTags($body);
             $this->setBody($body);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             // todo write to log
         }
     }
@@ -80,6 +85,7 @@ class ContentPostProcessor implements SingletonInterface
                 $this->domTextReplace($search, $set['label'], $set['title'], (int) $set['uid'], $dom);
             }
         }
+
         return $this->stripMainTagsFromHtml($dom->saveHTML());
     }
 
@@ -127,6 +133,7 @@ class ContentPostProcessor implements SingletonInterface
                 'label' => $result['short_description'],
             ];
         }
+
         return $replacements;
     }
 
@@ -136,33 +143,31 @@ class ContentPostProcessor implements SingletonInterface
     protected function replaceEscaptedTags(string $body): string
     {
         $body = preg_replace('~\[(\/?)abbr([^\]]*)\]~', '<$1abbr$2>', $body);
-        $body = preg_replace('~\[(\/?)span([^\]]*)\]~', '<$1span$2>', $body);
-        return $body;
+        return preg_replace('~\[(\/?)span([^\]]*)\]~', '<$1span$2>', (string) $body);
     }
 
     protected function domTextReplace(string $search, string $label, string $title, int $uid, DOMNode $domNode): void
     {
-        if ($domNode->hasChildNodes()) {
-            if ($this->isAllowedByGeneralClassName($domNode)) {
-                $children = [];
-                foreach ($domNode->childNodes as $child) {
-                    $children[] = $child;
-                }
-                /** @var DOMText $child */
-                foreach ($children as $child) {
-                    if ($child->nodeType === XML_TEXT_NODE && $this->isDomElementIncluded($child)) {
-                        if (stristr($child->wholeText, $search)) {
-                            $newText = preg_replace(
-                                '~\b(' . $search . ')\b~Ui',
-                                $this->wrapReplace($label, $title, $uid),
-                                $child->wholeText,
-                            );
-                            $newTextNode = $domNode->ownerDocument->createTextNode($newText);
-                            $domNode->replaceChild($newTextNode, $child);
-                        }
-                    } else {
-                        $this->domTextReplace($search, $label, $title, $uid, $child);
+        if ($domNode->hasChildNodes() && $this->isAllowedByGeneralClassName($domNode)) {
+            $children = [];
+            foreach ($domNode->childNodes as $child) {
+                $children[] = $child;
+            }
+
+            /** @var DOMText $child */
+            foreach ($children as $child) {
+                if ($child->nodeType === XML_TEXT_NODE && $this->isDomElementIncluded($child)) {
+                    if (stristr($child->wholeText, $search)) {
+                        $newText = preg_replace(
+                            '~\b(' . $search . ')\b~Ui',
+                            $this->wrapReplace($label, $title, $uid),
+                            $child->wholeText,
+                        );
+                        $newTextNode = $domNode->ownerDocument->createTextNode($newText);
+                        $domNode->replaceChild($newTextNode, $child);
                     }
+                } else {
+                    $this->domTextReplace($search, $label, $title, $uid, $child);
                 }
             }
         }
@@ -177,6 +182,7 @@ class ContentPostProcessor implements SingletonInterface
                 $this->getTarget($uid),
             );
         }
+
         return sprintf(
             '[abbr class="in2glossar-abbr" data-in2glossar-title="%s" data-in2glossar-url="%s"]$1[span]%s[/span][/abbr]',
             $title,
@@ -194,16 +200,19 @@ class ContentPostProcessor implements SingletonInterface
     {
         $parent = $element->parentNode;
         if (is_a($parent, DOMElement::class)) {
-            if (in_array($parent->tagName, $this->excludedTagNames) === true) {
+            if (in_array($parent->tagName, $this->excludedTagNames)) {
                 return false;
             }
+
             foreach ($this->excludedClassNames as $className) {
                 if ($parent->hasAttribute($className)) {
                     return false;
                 }
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -219,9 +228,10 @@ class ContentPostProcessor implements SingletonInterface
     protected function getBody(): string
     {
         preg_match('~<body[^>]*>(.*)<\/body>~Uims', $this->tsfe->content, $result);
-        if (!empty($result[1])) {
+        if (isset($result[1]) && ($result[1] !== '' && $result[1] !== '0')) {
             return $result[1];
         }
+
         throw new LogicException('No body tag found', 1612449248);
     }
 
@@ -230,11 +240,12 @@ class ContentPostProcessor implements SingletonInterface
      */
     protected function isAllowedByGeneralClassName(DOMNode $node): bool
     {
-        if (method_exists($node, 'hasAttribute')) {
-            if ($node->hasAttribute('class')
-                && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false) {
-                return false;
-            }
+        if (!method_exists($node, 'hasAttribute')) {
+            return true;
+        }
+        if ($node->hasAttribute('class')
+            && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false) {
+            return false;
         }
         return true;
     }
@@ -266,6 +277,7 @@ class ContentPostProcessor implements SingletonInterface
         if (empty($settings['targetPage'])) {
             throw new LogicException('No target page defined in TypoScript', 1612530083);
         }
+
         $configuration = [
             'parameter' => (int) $settings['targetPage'],
             'section' => 'in2glossar-definition-' . $uid,

@@ -37,9 +37,11 @@ class ContentElementClassViewHelper extends AbstractViewHelper
                 return '';
             }
         }
+
         if ($data['tx_in2glossar_exclude'] == 1) {
             return 'in2glossar-excluded';
         }
+
         return '';
     }
 }

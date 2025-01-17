@@ -13,6 +13,7 @@ class IndexGroupViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeChildren = false;
+
     /**
      * @var bool
      */
@@ -59,6 +60,7 @@ class IndexGroupViewHelper extends AbstractViewHelper
                 }
             }
         }
+
         return $group;
     }
 }

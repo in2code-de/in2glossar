@@ -24,6 +24,7 @@ class DefinitionAnchorViewHelper extends AbstractViewHelper
                 return '';
             }
         }
+
         return implode('-', [
             'in2glossar',
             'definition',
