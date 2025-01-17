@@ -9,6 +9,5 @@ nbproject
 /.Build/Web/typo3conf/*
 !/.Build/Web/typo3conf/LocalConfiguration.php
 !/.Build/Web/typo3conf/AdditionalConfiguration.php
-/.Build/bin
-/.Build/vendor
-
+.Build/
+config/
