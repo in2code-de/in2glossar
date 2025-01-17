@@ -11,8 +11,10 @@ use DOMText;
 use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
 use LogicException;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -58,8 +60,12 @@ class ContentPostProcessor implements SingletonInterface
 
     public function render(AfterCacheableContentIsGeneratedEvent $event): void
     {
+        /** @var ServerRequestInterface $request */
+        $this->request = $event->getRequest();
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $this->request->getAttribute('routing');
         $this->tsfe = $event->getController();
-        if (0 !== (int) $this->tsfe->getPageArguments()->getPageType()) {
+        if (0 !== (int) $pageArguments->getPageType()) {
             return;
         }
 
