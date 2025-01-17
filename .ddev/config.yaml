@@ -1,6 +1,6 @@
 name: in2glossar4
 type: typo3
-docroot: .Build/Web/
+docroot: .Build/public/
 php_version: "8.2"
 webserver_type: nginx-fpm
 xdebug_enabled: false
