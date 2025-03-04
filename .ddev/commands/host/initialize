@@ -16,4 +16,4 @@ echo "Run 'composer install'"
 ddev composer install
 
 echo "Copy .htaccess"
-cp .build/vendor/typo3/cms-install/Resources/Private/FolderStructureTemplateFiles/root-htaccess .Build/public/.htaccess
+cp .Build/vendor/typo3/cms-install/Resources/Private/FolderStructureTemplateFiles/root-htaccess .Build/public/.htaccess
