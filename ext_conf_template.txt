@@ -6,3 +6,6 @@ excludedClassNames = in2glossar-container,in2glossar-excluded,udg-mv-slider,btn
 
 # cat=basic//030; type=boolean; label=Use modern markup where the tags are used correctly. You may need to adapt your templates and styles.
 modernMarkup = 0
+
+# cat=basic//040; type=string; label=Prevent processing of dom nodes and their children by setting this data attribute
+excludedDataAttributes = data-in2glossar-excluded
