@@ -83,6 +83,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
             ],
         ],
         'starttime' => [
@@ -123,6 +124,7 @@ return [
             'label' => 'LLL:EXT:in2glossar/Resources/Private/Language/locallang_db.xlf:tx_in2glossar_domain_model_definition.tooltip',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
             ],
         ],
         'word' => [
@@ -133,6 +135,7 @@ return [
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 255,
+                'required' => true,
             ],
         ],
         'synonyms' => [
@@ -143,6 +146,7 @@ return [
                 'cols' => 30,
                 'rows' => 3,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'short_description' => [
@@ -153,6 +157,7 @@ return [
                 'cols' => 30,
                 'rows' => 3,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'description' => [

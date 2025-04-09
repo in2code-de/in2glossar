@@ -42,7 +42,7 @@ class IndexViewHelper extends AbstractViewHelper
         }
         foreach ($collection as $item) {
             /* @var $item Definition */
-            $firstChar = strtolower(substr($item->getWord(), 0, 1));
+            $firstChar = strtolower(substr($item->word, 0, 1));
             $index[$firstChar][] = $item;
         }
         return $index;

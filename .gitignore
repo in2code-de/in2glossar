@@ -1,2 +1,12 @@
+.DS_Store
 .idea
-/.php_cs.cache
+nbproject
+var/
+/.Build/Web/*
+!/.Build/Web/.htaccess
+!/.Build/Web/typo3conf
+/.Build/Web/typo3conf/*
+!/.Build/Web/typo3conf/LocalConfiguration.php
+!/.Build/Web/typo3conf/AdditionalConfiguration.php
+.Build/
+config/
