@@ -12,6 +12,8 @@ use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
 use LogicException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,9 +45,11 @@ class ContentPostProcessor implements SingletonInterface
     protected array $excludedTagNames;
     protected array $excludedClassNames;
     protected bool $modernMarkup;
+    protected Context $context;
 
-    public function __construct(ExtensionConfiguration $extensionConfiguration)
+    public function __construct(ExtensionConfiguration $extensionConfiguration, Context $context)
     {
+        $this->context = $context;
         $config = $extensionConfiguration->get('in2glossar');
         $this->excludedTagNames = GeneralUtility::trimExplode(',', (string) $config['excludedTagNames'], true);
         $this->excludedClassNames = GeneralUtility::trimExplode(',', (string) $config['excludedClassNames'], true);
@@ -109,14 +113,19 @@ class ContentPostProcessor implements SingletonInterface
      */
     protected function getReplacements(): array
     {
+        $languageId =  $this->context->getPropertyFromAspect('language', 'id');
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(Definition::TABLE_NAME);
         $results = $queryBuilder
             ->select('uid', 'word', 'synonyms', 'short_description')
             ->from(Definition::TABLE_NAME)
-            ->where('tooltip', 1)
+            ->where(
+                $queryBuilder->expr()->eq('tooltip', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)),
+            )
             ->executeQuery()
             ->fetchAllAssociative();
+
         $replacements = [];
         foreach ($results as $result) {
             $searches = array_merge([$result['word']], GeneralUtility::trimExplode(',', $result['synonyms'], true));
