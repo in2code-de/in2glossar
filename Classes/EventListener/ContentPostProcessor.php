@@ -44,6 +44,7 @@ class ContentPostProcessor implements SingletonInterface
      */
     protected array $excludedTagNames;
     protected array $excludedClassNames;
+    protected array $excludedDataAttributes;
     protected bool $modernMarkup;
     protected Context $context;
 
@@ -53,6 +54,7 @@ class ContentPostProcessor implements SingletonInterface
         $config = $extensionConfiguration->get('in2glossar');
         $this->excludedTagNames = GeneralUtility::trimExplode(',', (string) $config['excludedTagNames'], true);
         $this->excludedClassNames = GeneralUtility::trimExplode(',', (string) $config['excludedClassNames'], true);
+        $this->excludedDataAttributes = GeneralUtility::trimExplode(',', (string) $config['excludedDataAttributes'], true);
         $this->modernMarkup = (bool) $config['modernMarkup'];
     }
 
@@ -152,7 +154,7 @@ class ContentPostProcessor implements SingletonInterface
     protected function domTextReplace(string $search, string $label, string $title, int $uid, DOMNode $domNode): void
     {
         if ($domNode->hasChildNodes()) {
-            if ($this->isAllowedByGeneralClassName($domNode)) {
+            if ($this->shouldProcessNode($domNode)) {
                 $children = [];
                 foreach ($domNode->childNodes as $child) {
                     $children[] = $child;
@@ -237,12 +239,19 @@ class ContentPostProcessor implements SingletonInterface
     /**
      * Check if any parent element owns excludeClassGeneral
      */
-    protected function isAllowedByGeneralClassName(DOMNode $node): bool
+    protected function shouldProcessNode(DOMNode $node): bool
     {
         if (method_exists($node, 'hasAttribute')) {
-            if ($node->hasAttribute('class')
-                && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false) {
+            if (
+                $node->hasAttribute('class')
+                && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false
+            ) {
                 return false;
+            }
+            foreach ($this->excludedDataAttributes as $attribute) {
+                if ($node->hasAttribute($attribute)) {
+                    return false;
+                }
             }
         }
         return true;
