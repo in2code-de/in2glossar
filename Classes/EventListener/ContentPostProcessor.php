@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2glossar\EventListener;
 
+use Doctrine\DBAL\ArrayParameterType;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
@@ -123,7 +124,10 @@ class ContentPostProcessor implements SingletonInterface
             ->from(Definition::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('tooltip', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->in(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter([-1, $languageId], ArrayParameterType::INTEGER)
+                ),
             )
             ->executeQuery()
             ->fetchAllAssociative();
