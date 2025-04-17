@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace In2code\In2glossar\EventListener;
 
-use DOMDocument;
 use DOMElement;
 use DOMNode;
 use DOMText;
 use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
+use IvoPetkov\HTML5DOMDocument;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -90,7 +90,7 @@ class ContentPostProcessor implements SingletonInterface
 
     protected function replaceInTags(string $body): string
     {
-        $dom = new DOMDocument();
+        $dom = new HTML5DOMDocument();
         @$dom->loadHTML(
             $this->wrapHtmlWithMainTags($body),
             LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
