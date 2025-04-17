@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace In2code\In2glossar\EventListener;
 
 use Doctrine\DBAL\ArrayParameterType;
-use DOMDocument;
 use DOMElement;
 use DOMNode;
 use DOMText;
 use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
+use IvoPetkov\HTML5DOMDocument;
 use LogicException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
@@ -77,7 +77,7 @@ class ContentPostProcessor implements SingletonInterface
 
     protected function replaceInTags(string $body): string
     {
-        $dom = new DOMDocument();
+        $dom = new HTML5DOMDocument();
         @$dom->loadHTML(
             $this->wrapHtmlWithMainTags($body),
             LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e2568689fef350703deff6227307c46",
+    "content-hash": "ecbbf21b16cbb5509295dfd3610ab7e1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1165,6 +1165,61 @@
                 }
             ],
             "time": "2024-07-18T11:15:46+00:00"
+        },
+        {
+            "name": "ivopetkov/html5-dom-document-php",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ivopetkov/html5-dom-document-php.git",
+                "reference": "def94db52e2b8805840923454d00716d71b0f586"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ivopetkov/html5-dom-document-php/zipball/def94db52e2b8805840923454d00716d71b0f586",
+                "reference": "def94db52e2b8805840923454d00716d71b0f586",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "php": "8.0.*|8.1.*|8.2.*|8.3.*|8.4.*"
+            },
+            "require-dev": {
+                "ivopetkov/docs-generator": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivo Petkov",
+                    "email": "ivo@ivopetkov.com",
+                    "homepage": "http://ivopetkov.com"
+                }
+            ],
+            "description": "HTML5 DOMDocument PHP library (extends DOMDocument)",
+            "support": {
+                "issues": "https://github.com/ivopetkov/html5-dom-document-php/issues",
+                "source": "https://github.com/ivopetkov/html5-dom-document-php/tree/v2.8.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/ivopetkovcom",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/ivopetkov",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-04T21:46:59+00:00"
         },
         {
             "name": "lolli42/finediff",
@@ -12460,7 +12515,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -12468,6 +12523,6 @@
         "ext-dom": "*",
         "ext-libxml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
