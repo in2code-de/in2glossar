@@ -63,7 +63,6 @@ class ContentPostProcessor implements SingletonInterface
 
     public function render(AfterCacheableContentIsGeneratedEvent $event): void
     {
-        /** @var ServerRequestInterface $request */
         $this->request = $event->getRequest();
         /** @var PageArguments $pageArguments */
         $pageArguments = $this->request->getAttribute('routing');
@@ -252,10 +251,12 @@ class ContentPostProcessor implements SingletonInterface
         if (!method_exists($node, 'hasAttribute')) {
             return true;
         }
+
         if ($node->hasAttribute('class')
             && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false) {
             return false;
         }
+
         return true;
     }
 
