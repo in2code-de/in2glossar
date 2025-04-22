@@ -17,7 +17,7 @@
 							<f:for each="{groupItems}" as="definition">
 								<li id="{definition->glossar:definitionAnchor()}" class="in2glossar-excluded">
 									<p>
-										<dfn id="html"><abbr title="{definition.shortDescription}">{definition.word}</abbr></dfn>
+										<dfn><abbr title="{definition.shortDescription}">{definition.word}</abbr></dfn>
 										<f:format.html parseFuncTSPath="lib.parseFunc">{definition.description}</f:format.html>
 									</p>
 								</li>
