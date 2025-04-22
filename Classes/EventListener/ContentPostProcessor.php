@@ -4,212 +4,209 @@ declare(strict_types=1);
 
 namespace In2code\In2glossar\EventListener;
 
+use Doctrine\DBAL\ArrayParameterType;
 use DOMElement;
 use DOMNode;
 use DOMText;
+use DOMXPath;
 use Exception;
 use In2code\In2glossar\Domain\Model\Definition;
+use In2code\In2glossar\Domain\Model\Replacement;
+use In2code\In2glossar\Domain\Model\Syntax\Legacy;
+use In2code\In2glossar\Domain\Model\Syntax\Modern;
 use IvoPetkov\HTML5DOMDocument;
-use LogicException;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use Throwable;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\Utility\GeneralUtility as GU;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
-use function array_merge;
+use function array_shift;
 use function in_array;
-use function is_a;
+use function iterator_to_array;
 use function method_exists;
-use function preg_match;
-use function preg_replace;
-use function sprintf;
-use function str_replace;
-use function stristr;
+use function str_contains;
+use function strtolower;
 
 use const LIBXML_HTML_NODEFDTD;
 use const LIBXML_HTML_NOIMPLIED;
-use const XML_TEXT_NODE;
 
-class ContentPostProcessor implements SingletonInterface
+class ContentPostProcessor
 {
     protected const EXCLUDED_CLASS = 'in2glossar-excluded';
-
-    protected ?TypoScriptFrontendController $tsfe = null;
-
-    protected ?ServerRequestInterface $request = null;
-
-    /**
-     * Check that this script was not already rendered before
-     */
-    protected array $excludedTagNames;
-
-    protected array $excludedClassNames;
-
-    protected array $excludedDataAttributes;
-
-    protected bool $modernMarkup;
-
-    protected Context $context;
+    protected readonly LoggerInterface $logger;
+    protected readonly array $excludedTagNames;
+    protected readonly array $excludedClassNames;
+    protected readonly array $excludedDataAttributes;
+    protected readonly bool $modernMarkup;
+    protected readonly int $language;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration, Context $context)
     {
-        $this->context = $context;
+        $this->logger = GU::makeInstance(LogManager::class)->getLogger(static::class);
+        $this->language = $context->getPropertyFromAspect('language', 'id');
         $config = $extensionConfiguration->get('in2glossar');
-        $this->excludedTagNames = GeneralUtility::trimExplode(',', (string) $config['excludedTagNames'], true);
-        $this->excludedClassNames = GeneralUtility::trimExplode(',', (string) $config['excludedClassNames'], true);
-        $this->excludedDataAttributes = GeneralUtility::trimExplode(',', (string) $config['excludedDataAttributes'], true);
+        $this->excludedTagNames = GU::trimExplode(',', (string) $config['excludedTagNames'], true);
+        $this->excludedClassNames = GU::trimExplode(',', (string) $config['excludedClassNames'], true);
+        $this->excludedDataAttributes = GU::trimExplode(',', (string) $config['excludedDataAttributes'], true);
         $this->modernMarkup = (bool) $config['modernMarkup'];
     }
 
+    /**
+     * @throws Throwable
+     */
     public function render(AfterCacheableContentIsGeneratedEvent $event): void
     {
-        $this->request = $event->getRequest();
-        /** @var PageArguments $pageArguments */
-        $pageArguments = $this->request->getAttribute('routing');
-        $this->tsfe = $event->getController();
-        if (0 !== (int) $pageArguments->getPageType()) {
+        try {
+            $this->process($event);
+        } catch (Throwable $exception) {
+            $this->logger->error('Error while processing glossary', ['exception' => $exception]);
+            if (Environment::getContext()->isDevelopment()) {
+                throw $exception;
+            }
             return;
         }
-
-        try {
-            $body = $this->getBody();
-            $body = $this->replaceInTags($body);
-            $body = $this->replaceEscaptedTags($body);
-            $this->setBody($body);
-        } catch (Exception) {
-            // todo write to log
-        }
-    }
-
-    protected function replaceInTags(string $body): string
-    {
-        $dom = new HTML5DOMDocument();
-        @$dom->loadHTML(
-            $this->wrapHtmlWithMainTags($body),
-            LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
-        );
-        foreach ($this->getReplacements() as $set) {
-            foreach ((array) $set['searches'] as $search) {
-                $this->domTextReplace($search, $set['label'], $set['title'], (int) $set['uid'], $dom);
-            }
-        }
-
-        return $this->stripMainTagsFromHtml($dom->saveHTML());
     }
 
     /**
-     * Example return values:
-     *
-     *  [
-     *      'uid' => 123,
-     *      'title' => 'foo',
-     *      'searches' => [
-     *          'foo',
-     *          'bar',
-     *          'technic'
-     *      ],
-     *      'label' => 'This is the name of a development team of in2code'
-     *  ],
-     *  [
-     *      'uid' => 234,
-     *      'title' => 'Anyword',
-     *      'searches' => [
-     *          'Anyword'
-     *      ],
-     *      'label' => 'Here is the explanation'
-     *  ]
-     *
-     * @return array<array{'uid': int, 'title': string, 'searches': array<string>, 'label': string}>
+     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
-    protected function getReplacements(): array
+    protected function process(AfterCacheableContentIsGeneratedEvent $event): void
     {
-        $languageId =  $this->context->getPropertyFromAspect('language', 'id');
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        if (!$this->shouldProcessPageType($event)) {
+            return;
+        }
+        $targetPage = $this->getTargetPageUid($event);
+        $replacements = $this->getReplacements($targetPage);
+
+        $dom = new HTML5DOMDocument();
+        $tsfe = $event->getController();
+        $body = $tsfe->content;
+
+        $dom->loadHTML($body, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $domXpath = new DOMXPath($dom);
+        $bodyElement = $domXpath->query('/html/body')[0] ?? null;
+        if (null === $bodyElement) {
+            throw new Exception('Content does not have XPath /html/body');
+        }
+
+        $this->domTextReplace($bodyElement, $replacements);
+
+        $body = $dom->saveHTML();
+        $tsfe->content = $body;
+    }
+
+    protected function shouldProcessPageType(AfterCacheableContentIsGeneratedEvent $event): bool
+    {
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $event->getRequest()->getAttribute('routing');
+        return 0 === (int) $pageArguments->getPageType();
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getTargetPageUid(AfterCacheableContentIsGeneratedEvent $event): int
+    {
+        /** @var FrontendTypoScript $frontendTypoScript */
+        $frontendTypoScript = $event->getRequest()->getAttribute('frontend.typoscript');
+        $settings = $frontendTypoScript->getSetupArray()['plugin.']['tx_in2glossar.']['settings.'];
+        if (empty($settings['targetPage'])) {
+            $this->logger->error('No target page defined in TypoScript');
+            throw new Exception('No target page defined in TypoScript', 1744892996);
+        }
+        return (int) $settings['targetPage'];
+    }
+
+    /**
+     * @return array<Replacement>
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function getReplacements(int $targetPage): array
+    {
+        $connectionPool = GU::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(Definition::TABLE_NAME);
         $results = $queryBuilder
             ->select('uid', 'word', 'synonyms', 'short_description')
             ->from(Definition::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('tooltip', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->in(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter([-1, $this->language], ArrayParameterType::INTEGER),
+                ),
             )
             ->executeQuery()
             ->fetchAllAssociative();
 
+        $contentObject = GU::makeInstance(ContentObjectRenderer::class);
         $replacements = [];
+        $syntax = $this->modernMarkup ? new Modern() : new Legacy();
         foreach ($results as $result) {
-            $searches = array_merge([$result['word']], GeneralUtility::trimExplode(',', $result['synonyms'], true));
-            $replacements[] = [
-                'uid' => (int) $result['uid'],
-                'title' => $result['word'],
-                'searches' => $searches,
-                'label' => $result['short_description'],
-            ];
+            $uid = (int) $result['uid'];
+            $link = $contentObject->typoLink_URL([
+                'parameter' => $targetPage,
+                'section' => 'in2glossar-definition-' . $uid,
+            ]);
+            $replacements[] = new Replacement(
+                $result['word'],
+                $result['synonyms'],
+                $link,
+                $syntax,
+                $result['short_description'],
+            );
         }
-
         return $replacements;
     }
 
     /**
-     * Change "[abbr]" to "<abbr>" + "[span]" to "<span>"
+     * @param array<Replacement> $replacements
      */
-    protected function replaceEscaptedTags(string $body): string
+    protected function domTextReplace(DOMNode $domNode, array $replacements): void
     {
-        $body = preg_replace('~\[(\/?)abbr([^\]]*)\]~', '<$1abbr$2>', $body);
-        return preg_replace('~\[(\/?)span([^\]]*)\]~', '<$1span$2>', (string) $body);
-    }
+        if (!$this->shouldProcessNode($domNode)) {
+            return;
+        }
 
-    protected function domTextReplace(string $search, string $label, string $title, int $uid, DOMNode $domNode): void
-    {
-        if ($domNode->hasChildNodes()) {
-            if ($this->shouldProcessNode($domNode)) {
-                $children = [];
-                foreach ($domNode->childNodes as $child) {
-                    $children[] = $child;
-                }
-                /** @var DOMText $child */
-                foreach ($children as $child) {
-                    if ($child->nodeType === XML_TEXT_NODE && $this->isDomElementIncluded($child)) {
-                        if (stristr($child->wholeText, $search)) {
-                            $newText = preg_replace(
-                                '~\b(' . $search . ')\b~Ui',
-                                $this->wrapReplace($label, $title, $uid),
-                                $child->wholeText,
-                            );
-                            $newTextNode = $domNode->ownerDocument->createTextNode($newText);
-                            $domNode->replaceChild($newTextNode, $child);
+        /** @var array<DOMNode> $children */
+        $children = iterator_to_array($domNode->childNodes);
+
+        while ($child = array_shift($children)) {
+            if ($child instanceof DOMText) {
+                if ($this->isDomElementIncluded($child)) {
+                    foreach ($replacements as $replacement) {
+                        $childReplacements = $replacement->getReplacements($child);
+                        if (null !== $childReplacements) {
+                            $parentNode = $child->parentNode;
+                            foreach ($childReplacements as $childReplacement) {
+                                $parentNode->insertBefore($childReplacement, $child);
+                                // we processed and replaced the child for one search word,
+                                // but we need to process it for the other search words, too.
+                                // Since $child will be deleted (after this loop) from the DOM, we have to process the replacement DOMNodes.
+                                // And also recurse them, which is what we are "scheduling" by appending them to the children array.
+                                if (!($childReplacement instanceof DOMElement && $childReplacement->tagName === 'abbr')) {
+                                    $children[] = $childReplacement;
+                                }
+                            }
+                            $parentNode->removeChild($child);
+                            // break to skip processing other replacements with the deleted child
+                            break;
                         }
-                    } else {
-                        $this->domTextReplace($search, $label, $title, $uid, $child);
                     }
                 }
+            } else {
+                $this->domTextReplace($child, $replacements);
             }
         }
-    }
-
-    protected function wrapReplace(string $replace, string $title, int $uid): string
-    {
-        if ($this->modernMarkup) {
-            return sprintf(
-                '[abbr title="%s" class="in2glossar-abbr" data-in2glossar-url="%s"]$1[/abbr]',
-                $replace,
-                $this->getTarget($uid),
-            );
-        }
-
-        return sprintf(
-            '[abbr class="in2glossar-abbr" data-in2glossar-title="%s" data-in2glossar-url="%s"]$1[span]%s[/span][/abbr]',
-            $title,
-            $this->getTarget($uid),
-            $replace,
-        );
     }
 
     /**
@@ -220,58 +217,18 @@ class ContentPostProcessor implements SingletonInterface
     protected function isDomElementIncluded(DOMNode $element): bool
     {
         $parent = $element->parentNode;
-        if (is_a($parent, DOMElement::class)) {
-            if (in_array($parent->tagName, $this->excludedTagNames)) {
-                return false;
-            }
 
-            foreach ($this->excludedClassNames as $className) {
-                if ($parent->hasAttribute($className)) {
-                    return false;
-                }
-            }
-
-            return true;
+        if (!$parent instanceof DOMElement) {
+            return false;
         }
 
-        return false;
-    }
-
-    protected function setBody(string $body): void
-    {
-        $this->tsfe->content = preg_replace(
-            '/(<body[^>]*>)(.*)(<\/body>)/Uims',
-            '$1' . $body . '$3',
-            $this->tsfe->content,
-        );
-    }
-
-    protected function getBody(): string
-    {
-        preg_match('~<body[^>]*>(.*)<\/body>~Uims', $this->tsfe->content, $result);
-        if (isset($result[1]) && ($result[1] !== '' && $result[1] !== '0')) {
-            return $result[1];
+        if (in_array($parent->tagName, $this->excludedTagNames)) {
+            return false;
         }
 
-        throw new LogicException('No body tag found', 1612449248);
-    }
-
-    /**
-     * Check if any parent element owns excludeClassGeneral
-     */
-    protected function shouldProcessNode(DOMNode $node): bool
-    {
-        if (method_exists($node, 'hasAttribute')) {
-            if (
-                $node->hasAttribute('class')
-                && stristr($node->getAttribute('class'), self::EXCLUDED_CLASS) !== false
-            ) {
+        foreach ($this->excludedClassNames as $className) {
+            if ($parent->hasAttribute($className)) {
                 return false;
-            }
-            foreach ($this->excludedDataAttributes as $attribute) {
-                if ($node->hasAttribute($attribute)) {
-                    return false;
-                }
             }
         }
 
@@ -279,39 +236,31 @@ class ContentPostProcessor implements SingletonInterface
     }
 
     /**
-     * Wrap html with "<?xml encoding="utf-8" ?><html><body>|</body></html>"
-     *
-     *  This is a workarround for HTML parsing and wrting with \DOMDocument()
-     *      - The html and body tag are preventing strange p-tags while using LIBXML_HTML_NOIMPLIED
-     *      - The doctype declaration allows us the usage of umlauts and special characters
+     * Check if any parent element owns excludeClassGeneral
      */
-    protected function wrapHtmlWithMainTags(string $html): string
+    protected function shouldProcessNode(DOMNode $node): bool
     {
-        return '<?xml encoding="utf-8" ?><html><body>' . $html . '</body></html>';
-    }
-
-    /**
-     * Remove tags <?xml encoding="utf-8" ?><html><body></body></html>
-     * This function is normally used after wrapHtmlWithMainTags
-     */
-    protected function stripMainTagsFromHtml(string $html): string
-    {
-        return str_replace(['<html>', '</html>', '<body>', '</body>', '<?xml encoding="utf-8" ?>'], '', $html);
-    }
-
-    protected function getTarget(int $uid): string
-    {
-        $settings = $this->request->getAttribute('frontend.typoscript')->getSetupArray()['plugin.']['tx_in2glossar.']['settings.'];
-        if (empty($settings['targetPage'])) {
-            throw new LogicException('No target page defined in TypoScript', 1612530083);
+        if (!$node->hasChildNodes()) {
+            return false;
         }
 
-        $configuration = [
-            'parameter' => (int) $settings['targetPage'],
-            'section' => 'in2glossar-definition-' . $uid,
-        ];
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        return $contentObject->typoLink_URL($configuration);
+        if (!method_exists($node, 'hasAttribute')) {
+            return true;
+        }
+
+        if ($node->hasAttribute('class')) {
+            $class = strtolower($node->getAttribute('class'));
+            if (str_contains($class, self::EXCLUDED_CLASS)) {
+                return false;
+            }
+        }
+
+        foreach ($this->excludedDataAttributes as $attribute) {
+            if ($node->hasAttribute($attribute)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
