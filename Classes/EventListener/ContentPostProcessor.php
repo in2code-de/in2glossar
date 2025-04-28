@@ -91,7 +91,7 @@ class ContentPostProcessor
         $dom = new HTML5DOMDocument();
         $body = $tsfe->content;
 
-        $dom->loadHTML($body, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $dom->loadHTML($body, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
         $domXpath = new DOMXPath($dom);
         $bodyElement = $domXpath->query('/html/body')[0] ?? null;
         if (null === $bodyElement) {
