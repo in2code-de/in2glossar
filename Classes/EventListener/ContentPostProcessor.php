@@ -95,7 +95,7 @@ class ContentPostProcessor
         $domXpath = new DOMXPath($dom);
         $bodyElement = $domXpath->query('/html/body')[0] ?? null;
         if (null === $bodyElement) {
-            throw new Exception('Content does not have XPath /html/body');
+            throw new Exception('Content does not have XPath /html/body', 9373593789);
         }
 
         $this->domTextReplace($bodyElement, $replacements);
@@ -114,7 +114,7 @@ class ContentPostProcessor
      */
     protected function getTargetPageUid(TypoScriptFrontendController $tsfe): int
     {
-        $settings = $tsfe->tmpl->setup['plugin.']['tx_in2glossar.']['settings.'];
+        $settings = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getSetupArray()['plugin.']['tx_in2glossar.']['settings.'];
         if (empty($settings['targetPage'])) {
             $this->logger->error('No target page defined in TypoScript');
             throw new Exception('No target page defined in TypoScript', 1744892996);
