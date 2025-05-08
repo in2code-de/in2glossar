@@ -15,6 +15,7 @@ use In2code\In2glossar\Domain\Model\Replacement;
 use In2code\In2glossar\Domain\Model\Syntax\Legacy;
 use In2code\In2glossar\Domain\Model\Syntax\Modern;
 use IvoPetkov\HTML5DOMDocument;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -82,7 +83,8 @@ class ContentPostProcessor
     protected function process(AfterCacheableContentIsGeneratedEvent $event): void
     {
         $tsfe = $event->getController();
-        if (!$this->shouldProcessPageType($tsfe)) {
+        $request = $event->getRequest();
+        if (!$this->shouldProcessPageType($request)) {
             return;
         }
         $targetPage = $this->getTargetPageUid($tsfe);
@@ -104,9 +106,9 @@ class ContentPostProcessor
         $tsfe->content = $body;
     }
 
-    protected function shouldProcessPageType(TypoScriptFrontendController $tsfe): bool
+    protected function shouldProcessPageType(ServerRequestInterface $request): bool
     {
-        return 0 === (int) $tsfe->getPageArguments()->getPageType();
+        return 0 === (int) $request->getAttribute('routing')->getPageType();
     }
 
     /**
