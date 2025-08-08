@@ -11,13 +11,37 @@ This is a glossary extension for TYPO3
 This is an extension especially built for the needs of one customer to show tooltips and a list view with all glossary
 records.
 
-## Early Access Programm for TYPO3 13 support
+## Contribution with ddev
 
-:information_source: **TYPO3 13 compatibility**
+This repository provides a [DDEV]()-backed development environment. If DDEV is installed, simply run the following
+commands to quickly set up a local environment with example usages:
+
+* `ddev start`
+* `ddev initialize`
+
+### Requirements
+
+1. Install ddev, see: https://ddev.readthedocs.io/en/stable/#installation
+2. Install git-lfs, see: https://git-lfs.github.com/
+
+### Installation
+
+1. Clone this repository
+2. Run `ddev start`
+3. Run `ddev initialize` to setup configurations and test database
+
+### Branchinfo
+
+* Main Branch - Next Major Version
+* typo3-v13: Version V13 for TYPO3 13
+* typo3-v12: Version V4 for TYPO3 12
+
+## Early Access Programm for TYPO3 14 support
+
+:information_source: **TYPO3 14 compatibility**
 > See [EAP page (DE)](https://www.in2code.de/agentur/typo3-extensions/early-access-programm/) or
 > [EAP page (EN)](https://www.in2code.de/en/agency/typo3-extensions/early-access-program/) for more information how
-> to get access to a TYPO3 13 version
-
+> to get access to a TYPO3 14 version
 
 ## Changelog
 
