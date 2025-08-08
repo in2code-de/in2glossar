@@ -10,3 +10,4 @@ var/
 !/.Build/Web/typo3conf/AdditionalConfiguration.php
 .Build/
 config/
+composer.lock
