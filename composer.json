@@ -25,7 +25,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-dom": "*",
         "ext-libxml": "*",
         "ivopetkov/html5-dom-document-php": "^2.8",
@@ -68,8 +68,9 @@
         "phpmd/phpmd": "^2.15",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
+        "saschaegerer/phpstan-typo3": "^2.1",
         "se/selenium-server-standalone": "^3.141",
-        "ssch/typo3-rector": "^v3.0",
+        "ssch/typo3-rector": "^3.1",
         "typo3/cms-adminpanel": "^13.4",
         "typo3/cms-backend": "^13.4",
         "typo3/cms-belog": "^13.4",

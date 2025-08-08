@@ -15,6 +15,7 @@ use In2code\In2glossar\Domain\Model\Replacement;
 use In2code\In2glossar\Domain\Model\Syntax\Legacy;
 use In2code\In2glossar\Domain\Model\Syntax\Modern;
 use IvoPetkov\HTML5DOMDocument;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -23,10 +24,9 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility as GU;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
 use function array_shift;
@@ -82,21 +82,22 @@ class ContentPostProcessor
      */
     protected function process(AfterCacheableContentIsGeneratedEvent $event): void
     {
-        if (!$this->shouldProcessPageType($event)) {
+        $tsfe = $event->getController();
+        $request = $event->getRequest();
+        if (!$this->shouldProcessPageType($request)) {
             return;
         }
-        $targetPage = $this->getTargetPageUid($event);
+        $targetPage = $this->getTargetPageUid($tsfe);
         $replacements = $this->getReplacements($targetPage);
 
         $dom = new HTML5DOMDocument();
-        $tsfe = $event->getController();
         $body = $tsfe->content;
 
-        $dom->loadHTML($body, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $dom->loadHTML($body, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
         $domXpath = new DOMXPath($dom);
         $bodyElement = $domXpath->query('/html/body')[0] ?? null;
         if (null === $bodyElement) {
-            throw new Exception('Content does not have XPath /html/body');
+            throw new Exception('Content does not have XPath /html/body', 9373593789);
         }
 
         $this->domTextReplace($bodyElement, $replacements);
@@ -105,21 +106,17 @@ class ContentPostProcessor
         $tsfe->content = $body;
     }
 
-    protected function shouldProcessPageType(AfterCacheableContentIsGeneratedEvent $event): bool
+    protected function shouldProcessPageType(ServerRequestInterface $request): bool
     {
-        /** @var PageArguments $pageArguments */
-        $pageArguments = $event->getRequest()->getAttribute('routing');
-        return 0 === (int) $pageArguments->getPageType();
+        return 0 === (int) $request->getAttribute('routing')->getPageType();
     }
 
     /**
      * @throws Exception
      */
-    protected function getTargetPageUid(AfterCacheableContentIsGeneratedEvent $event): int
+    protected function getTargetPageUid(TypoScriptFrontendController $tsfe): int
     {
-        /** @var FrontendTypoScript $frontendTypoScript */
-        $frontendTypoScript = $event->getRequest()->getAttribute('frontend.typoscript');
-        $settings = $frontendTypoScript->getSetupArray()['plugin.']['tx_in2glossar.']['settings.'];
+        $settings = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getSetupArray()['plugin.']['tx_in2glossar.']['settings.'];
         if (empty($settings['targetPage'])) {
             $this->logger->error('No target page defined in TypoScript');
             throw new Exception('No target page defined in TypoScript', 1744892996);
