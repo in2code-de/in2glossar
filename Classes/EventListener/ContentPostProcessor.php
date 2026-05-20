@@ -54,9 +54,9 @@ class ContentPostProcessor
         $this->logger = GU::makeInstance(LogManager::class)->getLogger(static::class);
         $this->language = $context->getPropertyFromAspect('language', 'id');
         $config = $extensionConfiguration->get('in2glossar');
-        $this->excludedTagNames = GU::trimExplode(',', (string) $config['excludedTagNames'], true);
-        $this->excludedClassNames = GU::trimExplode(',', (string) $config['excludedClassNames'], true);
-        $this->excludedDataAttributes = GU::trimExplode(',', (string) $config['excludedDataAttributes'], true);
+        $this->excludedTagNames = GU::trimExplode(',', (string) ($config['excludedTagNames'] ?? ''), true);
+        $this->excludedClassNames = GU::trimExplode(',', (string) ($config['excludedClassNames'] ?? ''), true);
+        $this->excludedDataAttributes = GU::trimExplode(',', (string) ($config['excludedDataAttributes'] ?? ''), true);
         $this->modernMarkup = (bool) $config['modernMarkup'];
     }
 
